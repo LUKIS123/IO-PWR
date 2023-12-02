@@ -1,18 +1,17 @@
 package pl.edu.pwr.models;
 
-import pl.edu.pwr.models.enums.CargoType;
-import pl.edu.pwr.models.enums.JobStatus;
-
 public class Job {
     private int id;
-    public JobStatus status;
+    private int clientId;
+    public String status;
     public boolean isPaid = false;
     private final String description;
-    private final CargoType cargoType;
+    private final String cargoType;
     private final double distance;
     private final double weight;
 
-    public Job(JobStatus status, String description, CargoType cargoType, double distance, double weight) {
+    public Job(int clientId, String status, String description, String cargoType, double distance, double weight) {
+        this.clientId = clientId;
         this.status = status;
         this.description = description;
         this.cargoType = cargoType;
@@ -36,8 +35,12 @@ public class Job {
         return weight;
     }
 
-    public CargoType getCargoType() {
+    public String getCargoType() {
         return cargoType;
+    }
+
+    public int getClientId() {
+        return clientId;
     }
 
     @Override

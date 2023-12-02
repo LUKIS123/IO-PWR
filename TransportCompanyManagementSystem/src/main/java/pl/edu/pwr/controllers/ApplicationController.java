@@ -21,6 +21,9 @@ public class ApplicationController {
             case CLIENT -> new ClientController(user).index();
             case ADMINISTRATOR -> new AdministratorController(user).index();
             case DRIVER -> new DriverController(user).index();
+            default -> {
+                System.out.println("Niepoprawna nazwa!");
+            }
         }
     }
 }

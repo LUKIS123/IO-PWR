@@ -1,4 +1,4 @@
 package pl.edu.pwr.views.administrator;
 
-public class Index {
+public class AdministratorIndex {
 }

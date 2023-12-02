@@ -29,4 +29,8 @@ public class JobRepository implements RepositoryInterface<Job> {
     public void delete(int id) {
 
     }
+
+    public List<Job> getByUserId(int userId) {
+        return null;
+    }
 }
