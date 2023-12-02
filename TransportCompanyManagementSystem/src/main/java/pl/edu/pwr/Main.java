@@ -1,7 +1,10 @@
 package pl.edu.pwr;
 
+import pl.edu.pwr.controllers.ApplicationController;
+
 public class Main {
     public static void main(String[] args) {
-        System.out.println("Hello world!");
+        ApplicationController app = new ApplicationController();
+        app.runApp();
     }
 }

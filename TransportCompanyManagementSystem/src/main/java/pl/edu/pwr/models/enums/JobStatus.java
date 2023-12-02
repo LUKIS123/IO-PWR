@@ -1,4 +1,4 @@
-package pl.edu.pwr.models;
+package pl.edu.pwr.models.enums;
 
 public enum JobStatus {
     NEWLY_ADDED,

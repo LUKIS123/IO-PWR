@@ -4,7 +4,7 @@ import pl.edu.pwr.models.JobHistoryEntry;
 
 import java.util.List;
 
-public class JobHistoryRepository implements RepositoryInterface<JobHistoryEntry>{
+public class JobHistoryRepository implements RepositoryInterface<JobHistoryEntry> {
     @Override
     public List<JobHistoryEntry> getAll() {
         return null;
