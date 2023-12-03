@@ -3,21 +3,18 @@ package pl.edu.pwr;
 import pl.edu.pwr.controllers.ApplicationController;
 import pl.edu.pwr.utility.DatabaseConnectionSettings;
 
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Properties;
 
 public class Main {
     public static void main(String[] args) {
         System.setProperty("console.encoding", "UTF-8");
-        System.out.println("Łukasz");
-//        ApplicationController app = new ApplicationController();
-//        app.runApp();
+        ApplicationController app = new ApplicationController();
+        app.runApp();
 
 
+        /*
         try (Connection connection = DriverManager.getConnection(DatabaseConnectionSettings.databaseUrl, DatabaseConnectionSettings.user, DatabaseConnectionSettings.password)) {
             System.out.println("Connected to the PostgreSQL server successfully.");
 
@@ -48,6 +45,7 @@ public class Main {
             System.out.println("Connection failed. Check the stack trace for more details.");
             e.printStackTrace();
         }
+         */
 
 
     }

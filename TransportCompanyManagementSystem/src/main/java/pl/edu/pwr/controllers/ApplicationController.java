@@ -19,7 +19,7 @@ public class ApplicationController {
 
         switch (user.getUserType()) {
             case CLIENT -> new ClientController(user).index();
-            case ADMINISTRATOR -> new AdministratorController(user).index();
+            case ADMINISTRATOR -> new AdministrationController(user).index();
             case DRIVER -> new DriverController(user).index();
             default -> {
                 System.out.println("Niepoprawna nazwa!");

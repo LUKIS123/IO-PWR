@@ -1,6 +1,7 @@
 package pl.edu.pwr.Repositories;
 
 import pl.edu.pwr.models.Job;
+import pl.edu.pwr.models.enums.JobStatus;
 
 import java.util.List;
 
@@ -32,5 +33,13 @@ public class JobRepository implements RepositoryInterface<Job> {
 
     public List<Job> getByUserId(int userId) {
         return null;
+    }
+
+    public List<Job> getByStatus(JobStatus status) {
+        return null;
+    }
+
+    public void updateJobDriverAssignment(int driverId) {
+
     }
 }
