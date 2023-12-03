@@ -1,8 +1,8 @@
-package pl.edu.pwr.views.client;
+package pl.edu.pwr.views.application;
 
 import java.util.Scanner;
 
-public class ClientIndex {
+public class ClientAppIndex {
     public static int clientMenu() {
         System.out.println("MENU: Wybierz sposrod podanych opcji...");
         System.out.println("1 => Utorz nowe zlecenie");

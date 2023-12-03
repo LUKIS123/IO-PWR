@@ -1,17 +1,37 @@
 package pl.edu.pwr;
 
-import pl.edu.pwr.controllers.ApplicationController;
-import pl.edu.pwr.utility.DatabaseConnectionSettings;
-
-import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
+import pl.edu.pwr.Repositories.UserRepository;
+import pl.edu.pwr.application.AdministratorApplication;
+import pl.edu.pwr.application.ClientApplication;
+import pl.edu.pwr.application.DriverApplication;
+import pl.edu.pwr.controllers.DriverController;
+import pl.edu.pwr.controllers.JobController;
+import pl.edu.pwr.models.User;
+import pl.edu.pwr.views.application.InitializeIndex;
 
 public class Main {
     public static void main(String[] args) {
         System.setProperty("console.encoding", "UTF-8");
-        ApplicationController app = new ApplicationController();
-        app.runApp();
+
+        UserRepository userRepository = new UserRepository();
+        String username = InitializeIndex.initialize();
+        User user = userRepository.getByUsername(username);
+
+        if (user == null) {
+            return;
+        }
+
+        JobController jobController = new JobController();
+        DriverController driverController = new DriverController();
+
+        switch (user.getUserType()) {
+            case CLIENT -> new ClientApplication(user, jobController).index();
+            case ADMINISTRATOR -> new AdministratorApplication(user, jobController, driverController).index();
+            case DRIVER -> new DriverApplication(user, jobController).index();
+            default -> {
+                System.out.println("Niepoprawna nazwa!");
+            }
+        }
 
 
         /*

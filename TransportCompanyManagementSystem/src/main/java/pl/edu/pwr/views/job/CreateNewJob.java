@@ -1,8 +1,8 @@
-package pl.edu.pwr.views.client;
+package pl.edu.pwr.views.job;
 
 import pl.edu.pwr.dtos.CreateJobDto;
 
-public class CreateOrder {
+public class CreateNewJob {
 
     public static CreateJobDto order() {
         return null;

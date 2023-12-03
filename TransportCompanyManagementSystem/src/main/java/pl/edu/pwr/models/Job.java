@@ -33,8 +33,8 @@ public class Job {
             case "CANCELLED" -> {
                 return JobStatus.CANCELLED;
             }
-            case "READY_TO_VERIFY" -> {
-                return JobStatus.READY_TO_VERIFY;
+            case "IN_VERIFICATION_PROCESS" -> {
+                return JobStatus.IN_VERIFICATION_PROCESS;
             }
             case "VERIFIED" -> {
                 return JobStatus.VERIFIED;

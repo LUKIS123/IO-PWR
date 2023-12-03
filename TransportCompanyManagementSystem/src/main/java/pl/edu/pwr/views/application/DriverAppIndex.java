@@ -1,8 +1,8 @@
-package pl.edu.pwr.views.driver;
+package pl.edu.pwr.views.application;
 
 import java.util.Scanner;
 
-public class DriverIndex {
+public class DriverAppIndex {
     public static int driverMenu() {
         System.out.println("MENU: Wybierz sposrod podanych opcji...");
         System.out.println("1 => Wyswietl aktualne zlecenie");

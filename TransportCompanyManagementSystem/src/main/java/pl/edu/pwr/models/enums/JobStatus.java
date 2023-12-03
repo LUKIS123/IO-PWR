@@ -5,7 +5,7 @@ public enum JobStatus {
     NEWLY_ADDED,
     PAID,
     CANCELLED,
-    READY_TO_VERIFY,
+    IN_VERIFICATION_PROCESS,
     VERIFIED,
     REJECTED,
     IN_PROGRESS,
