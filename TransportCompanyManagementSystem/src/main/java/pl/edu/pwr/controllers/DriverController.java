@@ -1,50 +1,43 @@
 package pl.edu.pwr.controllers;
 
 import pl.edu.pwr.Repositories.DriverRepository;
-import pl.edu.pwr.Repositories.JobRepository;
 import pl.edu.pwr.models.Driver;
-import pl.edu.pwr.views.application.DriverAppIndex;
+import pl.edu.pwr.views.driver.DriverInfo;
+import pl.edu.pwr.views.driver.DriverStatusChangeAction;
 import pl.edu.pwr.views.driver.ListDrivers;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class DriverController {
-    private final JobRepository jobRepository;
     private final DriverRepository driverRepository;
 
     public DriverController() {
         driverRepository = new DriverRepository();
-        jobRepository = new JobRepository();
     }
 
-    public void index() {
-        int choice = DriverAppIndex.driverMenu();
-
+    public void setStatusOnShift(int id) {
+        Driver byId = driverRepository.getById(id);
+        byId.setBeginShift(LocalDateTime.now());
+        driverRepository.update(id, byId);
+        DriverStatusChangeAction.makeAction(byId);
     }
 
-    public void acceptJob(int jobId) {
-
+    public void setStatusDuringRest(int id) {
+        Driver byId = driverRepository.getById(id);
+        byId.setDuringRest(true);
+        driverRepository.update(id, byId);
+        DriverStatusChangeAction.makeAction(byId);
     }
 
-    public void setStatusJobFinished() {
-
-    }
-
-    public void setStatusOnShift() {
-
-    }
-
-    public void setStatusDuringRest() {
-
-    }
-
-    public void setStatusWorking() {
-
-    }
-
-    public void listAvailableDrivers(int orderId) {
+    public Driver listAvailableDrivers() {
         List<Driver> list = driverRepository.getAll().stream().filter(x -> (!x.isDuringExecutionOfOrder() && !x.isDuringRest())).toList();
         int id = ListDrivers.listDrivers(list);
+        return list.stream().filter(x -> x.getId() == id).findFirst().get();
     }
 
+    public void displayDriverInfo(int driverId) {
+        Driver byId = driverRepository.getById(driverId);
+        DriverInfo.displayDriverInfo(byId);
+    }
 }

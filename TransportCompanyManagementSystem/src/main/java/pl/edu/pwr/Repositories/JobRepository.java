@@ -1,5 +1,6 @@
 package pl.edu.pwr.Repositories;
 
+import pl.edu.pwr.dtos.JobDriverAssignmentDto;
 import pl.edu.pwr.models.Job;
 import pl.edu.pwr.models.enums.JobStatus;
 
@@ -39,7 +40,14 @@ public class JobRepository implements RepositoryInterface<Job> {
         return null;
     }
 
-    public void updateJobDriverAssignment(int driverId) {
+    public List<JobDriverAssignmentDto> getByStatusWithDriverSuggestion(JobStatus status) {
+        return null;
+    }
 
+    public void updateJobDriverAssignment(int driverId) {
+    }
+
+    public Job getAssignedJob(int driverId) {
+        return null;
     }
 }

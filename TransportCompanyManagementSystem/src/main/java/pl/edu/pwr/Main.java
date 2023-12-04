@@ -27,7 +27,7 @@ public class Main {
         switch (user.getUserType()) {
             case CLIENT -> new ClientApplication(user, jobController).index();
             case ADMINISTRATOR -> new AdministratorApplication(user, jobController, driverController).index();
-            case DRIVER -> new DriverApplication(user, jobController).index();
+            case DRIVER -> new DriverApplication(user, jobController, driverController).index();
             default -> {
                 System.out.println("Niepoprawna nazwa!");
             }
