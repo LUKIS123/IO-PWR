@@ -1,6 +1,7 @@
 package pl.edu.pwr.models;
 
 import pl.edu.pwr.models.enums.UserType;
+import pl.edu.pwr.views.driver.DriverView;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -10,6 +11,8 @@ public class Driver extends User {
     private boolean duringRest;
     private LocalDateTime beginShift;
     private LocalDateTime endShift;
+
+    public static DriverView driverView = new DriverView();
 
     public Driver(String username) {
         super(username);

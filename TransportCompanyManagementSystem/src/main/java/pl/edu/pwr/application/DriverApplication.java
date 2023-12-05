@@ -4,9 +4,10 @@ import pl.edu.pwr.controllers.DriverController;
 import pl.edu.pwr.controllers.JobController;
 import pl.edu.pwr.models.Job;
 import pl.edu.pwr.models.User;
-import pl.edu.pwr.views.application.DriverAppIndex;
+import pl.edu.pwr.views.application.ApplicationView;
 
 public class DriverApplication implements ApplicationInterface {
+    private final ApplicationView applicationView = new ApplicationView();
     private final User user;
     private Job assignedJob;
     private final JobController jobController;
@@ -20,7 +21,7 @@ public class DriverApplication implements ApplicationInterface {
 
     @Override
     public void index() {
-        int choice = DriverAppIndex.driverMenu();
+        int choice = applicationView.driverMenu();
         switch (choice) {
             case 1:
                 assignedJob = jobController.listJobInRealization(user.getId());

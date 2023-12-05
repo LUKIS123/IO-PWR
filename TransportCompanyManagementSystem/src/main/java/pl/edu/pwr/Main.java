@@ -7,14 +7,14 @@ import pl.edu.pwr.application.DriverApplication;
 import pl.edu.pwr.controllers.DriverController;
 import pl.edu.pwr.controllers.JobController;
 import pl.edu.pwr.models.User;
-import pl.edu.pwr.views.application.InitializeIndex;
+import pl.edu.pwr.views.application.ApplicationView;
 
 public class Main {
     public static void main(String[] args) {
         System.setProperty("console.encoding", "UTF-8");
 
         UserRepository userRepository = new UserRepository();
-        String username = InitializeIndex.initialize();
+        String username = ApplicationView.initializeIndex();
         User user = userRepository.getByUsername(username);
 
         if (user == null) {
