@@ -2,6 +2,7 @@ package pl.edu.pwr.models;
 
 import pl.edu.pwr.models.enums.CargoType;
 import pl.edu.pwr.models.enums.JobStatus;
+import pl.edu.pwr.views.job.JobView;
 
 public class Job {
     private int id;
@@ -12,6 +13,7 @@ public class Job {
     private final CargoType cargoType;
     private final double distance;
     private final double weight;
+    public static JobView jobView = new JobView();
 
     public Job(int clientId, String status, String description, String cargoType, double distance, double weight) {
         this.clientId = clientId;
