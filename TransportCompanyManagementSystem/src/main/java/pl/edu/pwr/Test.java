@@ -4,8 +4,13 @@ import pl.edu.pwr.Repositories.DriverRepository;
 import pl.edu.pwr.Repositories.JobRepository;
 import pl.edu.pwr.models.Driver;
 import pl.edu.pwr.models.Job;
+import pl.edu.pwr.models.enums.CargoType;
 
 import java.sql.SQLException;
+
+import static pl.edu.pwr.models.enums.CargoType.HEAVY;
+import static pl.edu.pwr.models.enums.CargoType.LIGHT;
+import static pl.edu.pwr.models.enums.JobStatus.PAID;
 
 public class Test {
     void test1() throws SQLException {
@@ -42,7 +47,15 @@ public class Test {
 
     void test7() throws SQLException {
         var repo = new JobRepository();
-        //Job j = new Job();
-        //repo.insert();
+        Job j = new Job(4,3, HEAVY.toString(),PAID.toString(),30000,80,true
+        );
+        repo.insert(j);
+    }
+
+    void test8() throws SQLException {
+        var repo = new JobRepository();
+        Job j = new Job(4,3, LIGHT.toString(),PAID.toString(),30000,80,true
+        );
+        repo.update(5,j);
     }
 }

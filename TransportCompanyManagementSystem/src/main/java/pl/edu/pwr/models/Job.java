@@ -10,11 +10,11 @@ public class Job {
     private final int clientId;
     private final CargoType cargoType;
     private JobStatus status;
-    private final double distance;
-    private final double weight;
+    private final int distance; // zmieniłem na int bo nie bede liczył klienta co do metrów
+    private final int weight; // zmieniłem na int bo nie bede liczył klienta co do gramów
     public boolean isPaid = false;
 
-    public Job(int job_Id, int driverId, int clientId, String cargoType, String status, double distance, double weight, Boolean isPaid) {
+    public Job(int job_Id, int driverId, int clientId, String cargoType, String status, int distance, int weight, Boolean isPaid) {
         this.job_Id = job_Id;
         this.driverId = driverId;
         this.cargoType = mapTypeToEnum(cargoType);
@@ -25,13 +25,14 @@ public class Job {
         this.isPaid = isPaid;
     }
 
-    public Job(int driverId, String cargoType, String status, double distance, double weight, int clientId) {
+    public Job( int driverId, int clientId, String cargoType, String status, int distance, int weight, Boolean isPaid) {
         this.driverId = driverId;
         this.cargoType = mapTypeToEnum(cargoType);
         this.status = mapStatusToEnum(status);
         this.distance = distance;
         this.weight = weight;
         this.clientId = clientId;
+        this.isPaid = isPaid;
     }
 
     private JobStatus mapStatusToEnum(String s) {
@@ -102,11 +103,11 @@ public class Job {
         return status;
     }
 
-    public double getDistance() {
+    public int getDistance() {
         return distance;
     }
 
-    public double getWeight() {
+    public int getWeight() {
         return weight;
     }
 

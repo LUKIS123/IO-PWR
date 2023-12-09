@@ -16,9 +16,9 @@ public class Main {
         System.setProperty("console.encoding", "UTF-8");
 
 
-        //todo do testów query
+        // todo funkcja do testów query
         Test test = new Test();
-        test.test6();
+        test.test8();
 
         UserRepository userRepository = new UserRepository();
         String username = InitializeIndex.initialize();

@@ -25,8 +25,8 @@ public class JobRepository implements RepositoryInterface<Job> {
             int clientid = Data.getInt("clientid");
             String cargotype = Data.getString("cargotype");
             String jobstatus = Data.getString("jobstatus");
-            double distance = Data.getDouble("distance");
-            double weight = Data.getDouble("weight");
+            int distance = Data.getInt("distance");
+            int weight = Data.getInt("weight");
             Boolean ispaid = Data.getBoolean("ispaid");
 
             Job j = new Job(
@@ -69,8 +69,8 @@ public class JobRepository implements RepositoryInterface<Job> {
         int clientid = Data.getInt("clientid");
         String cargotype = Data.getString("cargotype");
         String jobstatus = Data.getString("jobstatus");
-        double distance = Data.getDouble("distance");
-        double weight = Data.getDouble("weight");
+        int distance = Data.getInt("distance");
+        int weight = Data.getInt("weight");
         Boolean ispaid = Data.getBoolean("ispaid");
 
         Job j = new Job(
@@ -100,7 +100,7 @@ public class JobRepository implements RepositoryInterface<Job> {
     @Override
     public void insert(Job model) throws SQLException {
         String query = String.format("INSERT INTO Jobs" +
-                "( (nextval('jobs_id_seq')," +
+                "( jobid," +
                 " driverid," +
                 " clientid," +
                 " cargotype," +
@@ -109,18 +109,17 @@ public class JobRepository implements RepositoryInterface<Job> {
                 "weight," +
                 "ispaid)" +
                 "VALUES" +
-                "(%d,%d,%d,%s,%s,%f,%f,%b)",
-                model.getJob_Id(),
+                "(nextval('jobs_id_seq'),%d,%d,'%s','%s',%d,%d,%b);",
                 model.getDriverId(),
                 model.getClientId(),
-                model.getCargoType(),
-                model.getStatus(),
+                model.getCargoType().toString(),
+                model.getStatus().toString(),
                 model.getDistance(),
                 model.getWeight(),
                 model.isPaid());
 
-        System.out.println(query);
-        //DatabaseConnectionSettings.executeQuery(query);
+        //System.out.println(query);
+        DatabaseConnectionSettings.executeQuery(query);
     }
 
     @Override
@@ -130,17 +129,17 @@ public class JobRepository implements RepositoryInterface<Job> {
                         "jobid = %d,       " +
                         "driverid = %d,    " +
                         "clientid = %d,    " +
-                        "cargotype = %s,   " +
-                        "jobstatus = %s,   " +
-                        "distance = %f,    " +
-                        "weight = %f,      " +
+                        "cargotype = '%s',   " +
+                        "jobstatus = '%s',   " +
+                        "distance = %d,    " +
+                        "weight = %d,      " +
                         "ispaid = %b       " +
                         "WHERE jobid = %d;",
                 model.getJob_Id(),
                 model.getDriverId(),
                 model.getClientId(),
-                model.getCargoType(),
-                model.getStatus(),
+                model.getCargoType().toString(),
+                model.getStatus().toString(),
                 model.getDistance(),
                 model.getWeight(),
                 model.isPaid(),
