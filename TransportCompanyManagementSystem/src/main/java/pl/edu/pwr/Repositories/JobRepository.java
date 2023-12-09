@@ -42,6 +42,7 @@ public class JobRepository implements RepositoryInterface<Job> {
 
     public List<JobDriverAssignmentDto> getByStatusWithDriverSuggestion(JobStatus status) {
         return null;
+        //todo query do bazy i info
     }
 
     public void updateJobDriverAssignment(int driverId) {

@@ -4,22 +4,32 @@ import pl.edu.pwr.models.enums.CargoType;
 import pl.edu.pwr.models.enums.JobStatus;
 
 public class Job {
-    private int id;
-    private final int clientId;
-    public JobStatus status;
-    public boolean isPaid = false;
-    private final String description;
+    private int job_Id;
+    private int driverId;
     private final CargoType cargoType;
+    private JobStatus status;
     private final double distance;
     private final double weight;
+    private final int clientId;
+    public boolean isPaid = false;
 
-    public Job(int clientId, String status, String description, String cargoType, double distance, double weight) {
-        this.clientId = clientId;
-        this.status = mapStatusToEnum(status);
-        this.description = description;
+    public Job(int job_Id, int driverId, String cargoType, String status, double distance, double weight, int clientId) {
+        this.job_Id = job_Id;
+        this.driverId = driverId;
         this.cargoType = mapTypeToEnum(cargoType);
+        this.status = mapStatusToEnum(status);
         this.distance = distance;
         this.weight = weight;
+        this.clientId = clientId;
+    }
+
+    public Job(int driverId, String cargoType, String status, double distance, double weight, int clientId) {
+        this.driverId = driverId;
+        this.cargoType = mapTypeToEnum(cargoType);
+        this.status = mapStatusToEnum(status);
+        this.distance = distance;
+        this.weight = weight;
+        this.clientId = clientId;
     }
 
     private JobStatus mapStatusToEnum(String s) {
@@ -74,12 +84,20 @@ public class Job {
         }
     }
 
-    public int getId() {
-        return id;
+    public int getJob_Id() {
+        return job_Id;
     }
 
-    public String getDescription() {
-        return description;
+    public int getDriverId() {
+        return driverId;
+    }
+
+    public CargoType getCargoType() {
+        return cargoType;
+    }
+
+    public JobStatus getStatus() {
+        return status;
     }
 
     public double getDistance() {
@@ -90,23 +108,12 @@ public class Job {
         return weight;
     }
 
-    public CargoType getCargoType() {
-        return cargoType;
-    }
-
     public int getClientId() {
         return clientId;
     }
 
-    @Override
-    public String toString() {
-        return "Job{" +
-                "id=" + id +
-                ", status=" + status +
-                ", description='" + description + '\'' +
-                ", cargoType=" + cargoType +
-                ", distance=" + distance +
-                ", weight=" + weight +
-                '}';
+    public boolean isPaid() {
+        return isPaid;
     }
+
 }

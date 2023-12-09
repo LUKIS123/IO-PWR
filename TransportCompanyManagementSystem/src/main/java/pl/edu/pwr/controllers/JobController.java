@@ -30,7 +30,7 @@ public class JobController {
         List<JobDriverAssignmentDto> byStatus = jobRepository.getByStatusWithDriverSuggestion(status);
         // todo: wszystkim jobom dac status verification process
         int i = CheckoutNewJobs.listOrders(byStatus);
-        return byStatus.stream().filter(x -> x.driver.getId() == i).findFirst().get().job;
+        return byStatus.stream().filter(x -> x.driver.getClientID() == i).findFirst().get().job;
     }
 
     public int listJobsByOwner(int userId) {
@@ -38,7 +38,7 @@ public class JobController {
 
         Optional<Integer> index = ClientJobsIndex.listOrders(byUserId);
         if (index.isPresent()) {
-            Optional<Job> first = byUserId.stream().filter(x -> x.getId() == index.get()).findFirst();
+            Optional<Job> first = byUserId.stream().filter(x -> x.getJob_Id() == index.get()).findFirst();
             JobInfo.displayJobInfo(first.get());
         }
         return 0;
@@ -47,11 +47,11 @@ public class JobController {
     public JobDriverAssignmentDto acceptForConsideration(JobStatus status) {
         List<JobDriverAssignmentDto> list = jobRepository.getByStatusWithDriverSuggestion(status).stream().toList();
         int i = CheckoutNewJobs.listOrders(list);
-        return list.stream().filter(x -> x.job.getId() == i).findFirst().get();
+        return list.stream().filter(x -> x.job.getJob_Id() == i).findFirst().get();
     }
 
     public void assignDriverToJob(Driver driver, Job job) {
-        jobRepository.updateJobDriverAssignment(driver.getId());
+        jobRepository.updateJobDriverAssignment(driver.getClientID());
         JobAssignmentInfo.displayDriverInfo(driver, job);
     }
 
@@ -75,6 +75,7 @@ public class JobController {
         JobInfo.displayJobInfo(byId);
     }
 
+    /*
     public void createNewOrder(int clientId) {
         CreateJobDto dto = CreateNewJob.order();
         Job job = new Job(clientId, "NEWLY_ADDED", dto.description, dto.cargoType.toString(), dto.distance, dto.weight);
@@ -82,16 +83,18 @@ public class JobController {
         JobInfo.displayJobInfo(job);
     }
 
+     */
+
     public void makePayment(User user) {
-        List<Job> byUserId = jobRepository.getByUserId(user.getId());
+        List<Job> byUserId = jobRepository.getByUserId(user.getClientID());
         int choice = ListJobs.listAll(byUserId);
-        Job job = byUserId.stream().filter(x -> x.getId() == choice).findFirst().get();
+        Job job = byUserId.stream().filter(x -> x.getJob_Id() == choice).findFirst().get();
 
         boolean b = NewJobPayment.tryMakePayment(job);
         if (b) {
-            setJobAsPaid(job.getId());
+            setJobAsPaid(job.getJob_Id());
         } else {
-            setJobAsCancelled(job.getId());
+            setJobAsCancelled(job.getJob_Id());
         }
     }
 
