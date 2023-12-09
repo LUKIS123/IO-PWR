@@ -10,6 +10,7 @@ import pl.edu.pwr.models.enums.JobStatus;
 import pl.edu.pwr.views.job.JobAssignmentInfo;
 import pl.edu.pwr.views.job.*;
 
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,7 +21,7 @@ public class JobController {
         jobRepository = new JobRepository();
     }
 
-    public int listAllJobs() {
+    public int listAllJobs() throws SQLException {
         List<Job> all = jobRepository.getAll();
         int i = ListJobs.listAll(all);
         return i;
@@ -55,22 +56,22 @@ public class JobController {
         JobAssignmentInfo.displayDriverInfo(driver, job);
     }
 
-    public void setJobAsPaid(int jobId) {
+    public void setJobAsPaid(int jobId) throws SQLException {
         Job byId = jobRepository.getById(jobId);
         JobInfo.displayJobInfo(byId);
     }
 
-    public void setJobAsCancelled(int jobId) {
+    public void setJobAsCancelled(int jobId) throws SQLException {
         Job byId = jobRepository.getById(jobId);
         JobInfo.displayJobInfo(byId);
     }
 
-    public void setJobAsVerified(int jobId) {
+    public void setJobAsVerified(int jobId) throws SQLException {
         Job byId = jobRepository.getById(jobId);
         JobInfo.displayJobInfo(byId);
     }
 
-    public void setJobAsRejected(int jobId) {
+    public void setJobAsRejected(int jobId) throws SQLException {
         Job byId = jobRepository.getById(jobId);
         JobInfo.displayJobInfo(byId);
     }
@@ -85,7 +86,7 @@ public class JobController {
 
      */
 
-    public void makePayment(User user) {
+    public void makePayment(User user) throws SQLException {
         List<Job> byUserId = jobRepository.getByUserId(user.getClientID());
         int choice = ListJobs.listAll(byUserId);
         Job job = byUserId.stream().filter(x -> x.getJob_Id() == choice).findFirst().get();
@@ -98,12 +99,12 @@ public class JobController {
         }
     }
 
-    public void setJobAsFinished(int jobId) {
+    public void setJobAsFinished(int jobId) throws SQLException {
         Job byId = jobRepository.getById(jobId);
         JobInfo.displayJobInfo(byId);
     }
 
-    public void acceptJob(int jobId) {
+    public void acceptJob(int jobId) throws SQLException {
         Job byId = jobRepository.getById(jobId);
         JobInfo.displayJobInfo(byId);
     }

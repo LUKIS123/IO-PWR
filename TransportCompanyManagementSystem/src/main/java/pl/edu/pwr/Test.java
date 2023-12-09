@@ -1,7 +1,9 @@
 package pl.edu.pwr;
 
 import pl.edu.pwr.Repositories.DriverRepository;
+import pl.edu.pwr.Repositories.JobRepository;
 import pl.edu.pwr.models.Driver;
+import pl.edu.pwr.models.Job;
 
 import java.sql.SQLException;
 
@@ -26,5 +28,21 @@ public class Test {
     void test4() throws SQLException {
         var repo = new DriverRepository();
         repo.getAvailableDrivers();
+    }
+
+    void test5() throws SQLException {
+        var repo = new JobRepository();
+        repo.getAll();
+    }
+
+    void test6() throws SQLException {
+        var repo = new JobRepository();
+        repo.getById(3);
+    }
+
+    void test7() throws SQLException {
+        var repo = new JobRepository();
+        //Job j = new Job();
+        //repo.insert();
     }
 }

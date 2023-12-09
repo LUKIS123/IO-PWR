@@ -6,14 +6,15 @@ import pl.edu.pwr.models.enums.JobStatus;
 public class Job {
     private int job_Id;
     private int driverId;
+
+    private final int clientId;
     private final CargoType cargoType;
     private JobStatus status;
     private final double distance;
     private final double weight;
-    private final int clientId;
     public boolean isPaid = false;
 
-    public Job(int job_Id, int driverId, String cargoType, String status, double distance, double weight, int clientId) {
+    public Job(int job_Id, int driverId, int clientId, String cargoType, String status, double distance, double weight, Boolean isPaid) {
         this.job_Id = job_Id;
         this.driverId = driverId;
         this.cargoType = mapTypeToEnum(cargoType);
@@ -21,6 +22,7 @@ public class Job {
         this.distance = distance;
         this.weight = weight;
         this.clientId = clientId;
+        this.isPaid = isPaid;
     }
 
     public Job(int driverId, String cargoType, String status, double distance, double weight, int clientId) {

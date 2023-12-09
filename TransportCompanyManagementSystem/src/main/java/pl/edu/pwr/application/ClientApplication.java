@@ -4,6 +4,8 @@ import pl.edu.pwr.controllers.JobController;
 import pl.edu.pwr.models.User;
 import pl.edu.pwr.views.application.ClientAppIndex;
 
+import java.sql.SQLException;
+
 public class ClientApplication implements ApplicationInterface {
     private final User user;
     private final JobController jobController;
@@ -14,7 +16,7 @@ public class ClientApplication implements ApplicationInterface {
     }
 
     @Override
-    public void index() {
+    public void index() throws SQLException {
         int choice = ClientAppIndex.clientMenu();
         switch (choice) {
             case 1:
