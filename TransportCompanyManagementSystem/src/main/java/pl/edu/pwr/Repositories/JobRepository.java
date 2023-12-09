@@ -100,16 +100,16 @@ public class JobRepository implements RepositoryInterface<Job> {
     @Override
     public void insert(Job model) throws SQLException {
         String query = String.format("INSERT INTO Jobs" +
-                "( jobid," +
-                " driverid," +
-                " clientid," +
-                " cargotype," +
-                "jobstatus," +
-                "distance," +
-                "weight," +
-                "ispaid)" +
-                "VALUES" +
-                "(nextval('jobs_id_seq'),%d,%d,'%s','%s',%d,%d,%b);",
+                        "( jobid," +
+                        " driverid," +
+                        " clientid," +
+                        " cargotype," +
+                        "jobstatus," +
+                        "distance," +
+                        "weight," +
+                        "ispaid)" +
+                        "VALUES" +
+                        "(nextval('jobs_id_seq'),%d,%d,'%s','%s',%d,%d,%b);",
                 model.getDriverId(),
                 model.getClientId(),
                 model.getCargoType().toString(),
@@ -149,8 +149,9 @@ public class JobRepository implements RepositoryInterface<Job> {
 
 
     @Override
-    public void delete(int id) {
-
+    public void delete(int id) throws SQLException {
+        String query = String.format("DELETE FROM jobs WHERE jobid = %d;", id);
+        DatabaseConnectionSettings.executeQuery(query);
     }
 
     public List<Job> getByUserId(int userId) {

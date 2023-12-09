@@ -18,7 +18,7 @@ public class Main {
 
         // todo funkcja do testów query
         Test test = new Test();
-        test.test8();
+        test.test9();
 
         UserRepository userRepository = new UserRepository();
         String username = InitializeIndex.initialize();

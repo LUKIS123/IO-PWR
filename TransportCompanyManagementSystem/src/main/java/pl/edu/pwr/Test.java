@@ -58,4 +58,9 @@ public class Test {
         );
         repo.update(5,j);
     }
+
+    void test9() throws SQLException {
+        var repo = new JobRepository();
+        repo.delete(0);
+    }
 }
