@@ -22,4 +22,9 @@ public class Test {
         Driver tester = new Driver("Albert69",false,false);
         repo.update(10, tester);
     }
+
+    void test4() throws SQLException {
+        var repo = new DriverRepository();
+        repo.getAvailableDrivers();
+    }
 }

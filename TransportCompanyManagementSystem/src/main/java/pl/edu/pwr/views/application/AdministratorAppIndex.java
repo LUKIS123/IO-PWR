@@ -13,3 +13,5 @@ public class AdministratorAppIndex {
         return scanner.nextInt();
     }
 }
+
+// todo menu wyświetlnae

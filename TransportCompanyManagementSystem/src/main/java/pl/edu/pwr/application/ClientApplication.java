@@ -18,13 +18,13 @@ public class ClientApplication implements ApplicationInterface {
         int choice = ClientAppIndex.clientMenu();
         switch (choice) {
             case 1:
-                jobController.createNewOrder(user.getId());
+                //jobController.createNewOrder(user.getClientID());
 
             case 2:
                 jobController.makePayment(user);
 
             case 3:
-                jobController.listJobsByOwner(user.getId());
+                jobController.listJobsByOwner(user.getClientID());
                 
             default:
                 return;

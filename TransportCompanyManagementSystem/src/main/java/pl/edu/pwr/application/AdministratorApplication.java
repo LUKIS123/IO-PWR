@@ -9,6 +9,8 @@ import pl.edu.pwr.models.enums.JobStatus;
 import pl.edu.pwr.views.application.AdministratorAppIndex;
 import pl.edu.pwr.views.job.JobVerification;
 
+import java.sql.SQLException;
+
 public class AdministratorApplication implements ApplicationInterface {
     private final User user;
     private final JobController jobController;
@@ -21,7 +23,7 @@ public class AdministratorApplication implements ApplicationInterface {
     }
 
     @Override
-    public void index() {
+    public void index() throws SQLException {
         int choice = AdministratorAppIndex.adminMenu();
         switch (choice) {
             case 1:
@@ -31,15 +33,15 @@ public class AdministratorApplication implements ApplicationInterface {
                 JobDriverAssignmentDto jobDriverAssignmentDto = jobController.acceptForConsideration(JobStatus.PAID);
                 int decision = JobVerification.verifyView(jobDriverAssignmentDto.job, jobDriverAssignmentDto.driver);
                 if (decision == 0) {
-                    jobController.setJobAsVerified(jobDriverAssignmentDto.job.getId());
+                    jobController.setJobAsVerified(jobDriverAssignmentDto.job.getJob_Id());
                 } else if (decision == 2) {
                     System.out.println("Wybierz kierowce");
                     Driver newDriver = driverController.listAvailableDrivers();
                     // zapis nowego kierowcy
                     jobController.assignDriverToJob(newDriver, jobDriverAssignmentDto.job);
-                    jobController.setJobAsVerified(jobDriverAssignmentDto.job.getId());
+                    jobController.setJobAsVerified(jobDriverAssignmentDto.job.getJob_Id());
                 } else {
-                    jobController.setJobAsRejected(jobDriverAssignmentDto.job.getId());
+                    jobController.setJobAsRejected(jobDriverAssignmentDto.job.getJob_Id());
                 }
 
             case 3:

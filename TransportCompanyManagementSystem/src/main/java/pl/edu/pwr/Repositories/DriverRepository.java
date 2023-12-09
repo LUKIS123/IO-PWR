@@ -89,8 +89,25 @@ public class DriverRepository implements RepositoryInterface<Driver> {
         DatabaseConnectionSettings.executeQuery(query);
     }
 
-    public List<Driver> getAvailableDrivers() {
+    public List<Driver> getAvailableDrivers() throws SQLException {
         List<Driver> driverList = new ArrayList<>();
+        String query = "SELECT nick from Drivers\n" +
+                "WHERE duringrest = FALSE\n" +
+                "AND duringexecutionoforder = FALSE;";
+
+        ResultSet Data = DatabaseConnectionSettings.getDataFromDatabse(query);
+
+        while (Data.next()) {
+            String nick = Data.getString("nick");
+            Driver d = new Driver(nick);
+            driverList.add(d);
+        }
+
+        //todo usuń to potem 2
+        for (Driver d : driverList) {
+            System.out.print(d.getUsername() + " ");
+            System.out.println();
+        }
         return driverList;
     }
 }

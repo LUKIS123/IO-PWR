@@ -18,7 +18,7 @@ public class Main {
 
         //todo do testów query
         Test test = new Test();
-        test.test3();
+        test.test4();
 
         UserRepository userRepository = new UserRepository();
         String username = InitializeIndex.initialize();
