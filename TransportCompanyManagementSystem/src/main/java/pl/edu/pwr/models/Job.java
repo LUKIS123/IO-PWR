@@ -2,11 +2,12 @@ package pl.edu.pwr.models;
 
 import pl.edu.pwr.models.enums.CargoType;
 import pl.edu.pwr.models.enums.JobStatus;
+import pl.edu.pwr.views.job.JobView;
 
 public class Job {
-    private int job_Id;
+    public static JobView jobView = new JobView();
+    private int jobId;
     private int driverId;
-
     private final int clientId;
     private final CargoType cargoType;
     private JobStatus status;
@@ -14,8 +15,8 @@ public class Job {
     private final int weight; // zmieniłem na int bo nie bede liczył klienta co do gramów
     public boolean isPaid = false;
 
-    public Job(int job_Id, int driverId, int clientId, String cargoType, String status, int distance, int weight, Boolean isPaid) {
-        this.job_Id = job_Id;
+    public Job(int jobId, int driverId, int clientId, String cargoType, String status, int distance, int weight, Boolean isPaid) {
+        this.jobId = jobId;
         this.driverId = driverId;
         this.cargoType = mapTypeToEnum(cargoType);
         this.status = mapStatusToEnum(status);
@@ -25,7 +26,7 @@ public class Job {
         this.isPaid = isPaid;
     }
 
-    public Job( int driverId, int clientId, String cargoType, String status, int distance, int weight, Boolean isPaid) {
+    public Job(int driverId, int clientId, String cargoType, String status, int distance, int weight, Boolean isPaid) {
         this.driverId = driverId;
         this.cargoType = mapTypeToEnum(cargoType);
         this.status = mapStatusToEnum(status);
@@ -33,6 +34,14 @@ public class Job {
         this.weight = weight;
         this.clientId = clientId;
         this.isPaid = isPaid;
+    }
+
+    public Job(int clientId, String newlyAdded, String cargoType, int distance, int weight) {
+        this.clientId = clientId;
+        this.status = mapStatusToEnum(newlyAdded);
+        this.cargoType = mapTypeToEnum(cargoType);
+        this.distance = distance;
+        this.weight = weight;
     }
 
     private JobStatus mapStatusToEnum(String s) {
@@ -87,8 +96,8 @@ public class Job {
         }
     }
 
-    public int getJob_Id() {
-        return job_Id;
+    public int getJobId() {
+        return jobId;
     }
 
     public int getDriverId() {
@@ -119,4 +128,7 @@ public class Job {
         return isPaid;
     }
 
+    public void setStatus(JobStatus status) {
+        this.status = status;
+    }
 }

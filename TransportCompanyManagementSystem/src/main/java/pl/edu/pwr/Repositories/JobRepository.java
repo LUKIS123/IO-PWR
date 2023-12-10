@@ -1,7 +1,6 @@
 package pl.edu.pwr.Repositories;
 
 import pl.edu.pwr.dtos.JobDriverAssignmentDto;
-import pl.edu.pwr.models.Driver;
 import pl.edu.pwr.models.Job;
 import pl.edu.pwr.models.enums.JobStatus;
 import pl.edu.pwr.utility.DatabaseConnectionSettings;
@@ -43,7 +42,7 @@ public class JobRepository implements RepositoryInterface<Job> {
 
         //todo usuń to potem
         for (Job j : jobList) {
-            System.out.print(j.getJob_Id() + " ");
+            System.out.print(j.getJobId() + " ");
             System.out.print(j.getDriverId() + " ");
             System.out.print(j.getClientId() + " ");
             System.out.print(j.getCargoType() + " ");
@@ -84,7 +83,7 @@ public class JobRepository implements RepositoryInterface<Job> {
                 ispaid);
 
         //todo usuń to potem
-        System.out.print(j.getJob_Id() + " ");
+        System.out.print(j.getJobId() + " ");
         System.out.print(j.getDriverId() + " ");
         System.out.print(j.getClientId() + " ");
         System.out.print(j.getCargoType() + " ");
@@ -135,7 +134,7 @@ public class JobRepository implements RepositoryInterface<Job> {
                         "weight = %d,      " +
                         "ispaid = %b       " +
                         "WHERE jobid = %d;",
-                model.getJob_Id(),
+                model.getJobId(),
                 model.getDriverId(),
                 model.getClientId(),
                 model.getCargoType().toString(),

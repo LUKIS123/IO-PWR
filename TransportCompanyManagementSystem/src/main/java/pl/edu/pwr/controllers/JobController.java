@@ -7,10 +7,9 @@ import pl.edu.pwr.models.Driver;
 import pl.edu.pwr.models.Job;
 import pl.edu.pwr.models.User;
 import pl.edu.pwr.models.enums.JobStatus;
-import pl.edu.pwr.views.job.JobAssignmentInfo;
-import pl.edu.pwr.views.job.*;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,97 +20,125 @@ public class JobController {
         jobRepository = new JobRepository();
     }
 
-    public int listAllJobs() throws SQLException {
-        List<Job> all = jobRepository.getAll();
-        int i = ListJobs.listAll(all);
+    public int listAllJobs() {
+        List<Job> all;
+        try {
+            all = jobRepository.getAll();
+        } catch (SQLException e) {
+            all = new ArrayList<>();
+        }
+        int i = Job.jobView.listAll(all);
         return i;
     }
 
     public Job listJobByStatus(JobStatus status) {
         List<JobDriverAssignmentDto> byStatus = jobRepository.getByStatusWithDriverSuggestion(status);
         // todo: wszystkim jobom dac status verification process
-        int i = CheckoutNewJobs.listOrders(byStatus);
-        return byStatus.stream().filter(x -> x.driver.getClientID() == i).findFirst().get().job;
+        int i = Job.jobView.listOrdersWithDriverAssigment(byStatus);
+        return byStatus.stream().filter(x -> x.driver.getId() == i).findFirst().get().job;
     }
 
     public int listJobsByOwner(int userId) {
         List<Job> byUserId = jobRepository.getByUserId(userId);
 
-        Optional<Integer> index = ClientJobsIndex.listOrders(byUserId);
+        Optional<Integer> index = Job.jobView.listOrders(byUserId);
         if (index.isPresent()) {
-            Optional<Job> first = byUserId.stream().filter(x -> x.getJob_Id() == index.get()).findFirst();
-            JobInfo.displayJobInfo(first.get());
+            Optional<Job> first = byUserId.stream().filter(x -> x.getJobId() == index.get()).findFirst();
+            Job.jobView.displayJobInfo(first.get());
         }
         return 0;
     }
 
     public JobDriverAssignmentDto acceptForConsideration(JobStatus status) {
         List<JobDriverAssignmentDto> list = jobRepository.getByStatusWithDriverSuggestion(status).stream().toList();
-        int i = CheckoutNewJobs.listOrders(list);
-        return list.stream().filter(x -> x.job.getJob_Id() == i).findFirst().get();
+        int i = Job.jobView.listOrdersWithDriverAssigment(list);
+        return list.stream().filter(x -> x.job.getJobId() == i).findFirst().get();
     }
 
     public void assignDriverToJob(Driver driver, Job job) {
-        jobRepository.updateJobDriverAssignment(driver.getClientID());
-        JobAssignmentInfo.displayDriverInfo(driver, job);
+        jobRepository.updateJobDriverAssignment(driver.getId());
+        Job.jobView.displayDriverJobInfo(driver, job);
     }
 
-    public void setJobAsPaid(int jobId) throws SQLException {
-        Job byId = jobRepository.getById(jobId);
-        JobInfo.displayJobInfo(byId);
-    }
+    public void setJobAsPaid(int jobId) {
+        try {
+            Job byId = jobRepository.getById(jobId);
+            Job.jobView.displayJobInfo(byId);
+        } catch (SQLException e) {
 
-    public void setJobAsCancelled(int jobId) throws SQLException {
-        Job byId = jobRepository.getById(jobId);
-        JobInfo.displayJobInfo(byId);
-    }
-
-    public void setJobAsVerified(int jobId) throws SQLException {
-        Job byId = jobRepository.getById(jobId);
-        JobInfo.displayJobInfo(byId);
-    }
-
-    public void setJobAsRejected(int jobId) throws SQLException {
-        Job byId = jobRepository.getById(jobId);
-        JobInfo.displayJobInfo(byId);
-    }
-
-    /*
-    public void createNewOrder(int clientId) {
-        CreateJobDto dto = CreateNewJob.order();
-        Job job = new Job(clientId, "NEWLY_ADDED", dto.description, dto.cargoType.toString(), dto.distance, dto.weight);
-        jobRepository.insert(job);
-        JobInfo.displayJobInfo(job);
-    }
-
-     */
-
-    public void makePayment(User user) throws SQLException {
-        List<Job> byUserId = jobRepository.getByUserId(user.getClientID());
-        int choice = ListJobs.listAll(byUserId);
-        Job job = byUserId.stream().filter(x -> x.getJob_Id() == choice).findFirst().get();
-
-        boolean b = NewJobPayment.tryMakePayment(job);
-        if (b) {
-            setJobAsPaid(job.getJob_Id());
-        } else {
-            setJobAsCancelled(job.getJob_Id());
         }
     }
 
-    public void setJobAsFinished(int jobId) throws SQLException {
-        Job byId = jobRepository.getById(jobId);
-        JobInfo.displayJobInfo(byId);
+    public void setJobAsCancelled(int jobId) {
+        try {
+            Job byId = jobRepository.getById(jobId);
+            Job.jobView.displayJobInfo(byId);
+        } catch (SQLException e) {
+        }
     }
 
-    public void acceptJob(int jobId) throws SQLException {
-        Job byId = jobRepository.getById(jobId);
-        JobInfo.displayJobInfo(byId);
+    public void setJobAsVerified(int jobId) {
+        try {
+            Job byId = jobRepository.getById(jobId);
+            Job.jobView.displayJobInfo(byId);
+        } catch (SQLException e) {
+        }
+    }
+
+    public void setJobAsRejected(int jobId) {
+        try {
+            Job byId = jobRepository.getById(jobId);
+            Job.jobView.displayJobInfo(byId);
+        } catch (SQLException e) {
+
+        }
+    }
+
+    public void createNewOrder(int clientId) {
+        try {
+            CreateJobDto dto = Job.jobView.order();
+            Job job = new Job(clientId, "NEWLY_ADDED", dto.cargoType.toString(), dto.distance, dto.weight);
+            jobRepository.insert(job);
+            Job.jobView.displayJobInfo(job);
+        } catch (SQLException e) {
+
+        }
+    }
+
+    public void makePayment(User user) {
+        List<Job> byUserId = jobRepository.getByUserId(user.getId());
+        int choice = Job.jobView.listAll(byUserId);
+        Job job = byUserId.stream().filter(x -> x.getJobId() == choice).findFirst().get();
+
+        boolean b = Job.jobView.tryMakePayment(job);
+        if (b) {
+            setJobAsPaid(job.getJobId());
+        } else {
+            setJobAsCancelled(job.getJobId());
+        }
+    }
+
+    public void setJobAsFinished(int jobId) {
+        try {
+            Job byId = jobRepository.getById(jobId);
+            Job.jobView.displayJobInfo(byId);
+        } catch (SQLException e) {
+
+        }
+    }
+
+    public void acceptJob(int jobId) {
+        try {
+            Job byId = jobRepository.getById(jobId);
+            Job.jobView.displayJobInfo(byId);
+        } catch (SQLException e) {
+
+        }
     }
 
     public Job listJobInRealization(int driverId) {
         Job assignedJob = jobRepository.getAssignedJob(driverId);
-        JobInfo.displayJobInfo(assignedJob);
+        Job.jobView.displayJobInfo(assignedJob);
         return assignedJob;
     }
 

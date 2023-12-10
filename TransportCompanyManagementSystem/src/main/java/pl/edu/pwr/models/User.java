@@ -12,10 +12,6 @@ public class User {
         this.userType = UserType.CLIENT;
     }
 
-    public int getClientID() {
-        return clientId;
-    }
-
     public UserType getUserType() {
         return userType;
     }
@@ -24,4 +20,7 @@ public class User {
         return username;
     }
 
+    public int getId() {
+        return clientId;
+    }
 }

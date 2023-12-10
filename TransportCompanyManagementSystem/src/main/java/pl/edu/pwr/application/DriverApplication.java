@@ -4,11 +4,10 @@ import pl.edu.pwr.controllers.DriverController;
 import pl.edu.pwr.controllers.JobController;
 import pl.edu.pwr.models.Job;
 import pl.edu.pwr.models.User;
-import pl.edu.pwr.views.application.DriverAppIndex;
-
-import java.sql.SQLException;
+import pl.edu.pwr.views.application.ApplicationView;
 
 public class DriverApplication implements ApplicationInterface {
+    private final ApplicationView applicationView = new ApplicationView();
     private final User user;
     private Job assignedJob;
     private final JobController jobController;
@@ -21,24 +20,24 @@ public class DriverApplication implements ApplicationInterface {
     }
 
     @Override
-    public void index() throws SQLException {
-        int choice = DriverAppIndex.driverMenu();
+    public void index() {
+        int choice = applicationView.driverMenu();
         switch (choice) {
             case 1:
-                assignedJob = jobController.listJobInRealization(user.getClientID());
+                assignedJob = jobController.listJobInRealization(user.getId());
             case 2:
                 if (assignedJob == null) return;
-                jobController.acceptJob(assignedJob.getJob_Id());
+                jobController.acceptJob(assignedJob.getJobId());
             case 3:
                 if (assignedJob == null) return;
-                jobController.setJobAsFinished(assignedJob.getJob_Id());
+                jobController.setJobAsFinished(assignedJob.getJobId());
             case 4:
-                driverController.setStatusDuringRest(user.getClientID());
+                driverController.setStatusDuringRest(user.getId());
             case 5:
-                driverController.setStatusOnShift(user.getClientID());
+                driverController.setStatusOnShift(user.getId());
             default:
                 return;
         }
-
     }
+
 }

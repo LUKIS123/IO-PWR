@@ -3,9 +3,6 @@ package pl.edu.pwr.models;
 import pl.edu.pwr.models.enums.UserType;
 import pl.edu.pwr.views.driver.DriverView;
 
-import java.time.Duration;
-import java.time.LocalDateTime;
-
 public class Driver extends User {
     private boolean duringExecutionOfOrder; // czy wykonuje zlecenia w tym momecnie
     private boolean duringRest; // czy ustawowa przerwa
@@ -38,6 +35,5 @@ public class Driver extends User {
     public void setDuringRest(boolean duringRest) {
         this.duringRest = duringRest;
     }
-
 
 }
