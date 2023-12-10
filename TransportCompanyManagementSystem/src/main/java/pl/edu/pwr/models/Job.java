@@ -2,26 +2,37 @@ package pl.edu.pwr.models;
 
 import pl.edu.pwr.models.enums.CargoType;
 import pl.edu.pwr.models.enums.JobStatus;
-import pl.edu.pwr.views.job.JobView;
 
 public class Job {
-    private int id;
-    private final int clientId;
-    public JobStatus status;
-    public boolean isPaid = false;
-    private final String description;
-    private final CargoType cargoType;
-    private final double distance;
-    private final double weight;
-    public static JobView jobView = new JobView();
+    private int job_Id;
+    private int driverId;
 
-    public Job(int clientId, String status, String description, String cargoType, double distance, double weight) {
-        this.clientId = clientId;
-        this.status = mapStatusToEnum(status);
-        this.description = description;
+    private final int clientId;
+    private final CargoType cargoType;
+    private JobStatus status;
+    private final int distance; // zmieniłem na int bo nie bede liczył klienta co do metrów
+    private final int weight; // zmieniłem na int bo nie bede liczył klienta co do gramów
+    public boolean isPaid = false;
+
+    public Job(int job_Id, int driverId, int clientId, String cargoType, String status, int distance, int weight, Boolean isPaid) {
+        this.job_Id = job_Id;
+        this.driverId = driverId;
         this.cargoType = mapTypeToEnum(cargoType);
+        this.status = mapStatusToEnum(status);
         this.distance = distance;
         this.weight = weight;
+        this.clientId = clientId;
+        this.isPaid = isPaid;
+    }
+
+    public Job( int driverId, int clientId, String cargoType, String status, int distance, int weight, Boolean isPaid) {
+        this.driverId = driverId;
+        this.cargoType = mapTypeToEnum(cargoType);
+        this.status = mapStatusToEnum(status);
+        this.distance = distance;
+        this.weight = weight;
+        this.clientId = clientId;
+        this.isPaid = isPaid;
     }
 
     private JobStatus mapStatusToEnum(String s) {
@@ -76,39 +87,36 @@ public class Job {
         }
     }
 
-    public int getId() {
-        return id;
+    public int getJob_Id() {
+        return job_Id;
     }
 
-    public String getDescription() {
-        return description;
-    }
-
-    public double getDistance() {
-        return distance;
-    }
-
-    public double getWeight() {
-        return weight;
+    public int getDriverId() {
+        return driverId;
     }
 
     public CargoType getCargoType() {
         return cargoType;
     }
 
+    public JobStatus getStatus() {
+        return status;
+    }
+
+    public int getDistance() {
+        return distance;
+    }
+
+    public int getWeight() {
+        return weight;
+    }
+
     public int getClientId() {
         return clientId;
     }
 
-    @Override
-    public String toString() {
-        return "Job{" +
-                "id=" + id +
-                ", status=" + status +
-                ", description='" + description + '\'' +
-                ", cargoType=" + cargoType +
-                ", distance=" + distance +
-                ", weight=" + weight +
-                '}';
+    public boolean isPaid() {
+        return isPaid;
     }
+
 }

@@ -9,17 +9,29 @@ import pl.edu.pwr.controllers.JobController;
 import pl.edu.pwr.models.User;
 import pl.edu.pwr.views.application.ApplicationView;
 
+import java.sql.SQLException;
+
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws SQLException {
         System.setProperty("console.encoding", "UTF-8");
+
+
+        // todo funkcja do testów query
+        Test test = new Test();
+        test.test9();
 
         UserRepository userRepository = new UserRepository();
         String username = ApplicationView.initializeIndex();
         User user = userRepository.getByUsername(username);
 
+        // todo login in tylko po nazwie
+        user = new User("m");
         if (user == null) {
             return;
         }
+
+        // po użytkowniku param do switcha user.getUserType()
+
 
         JobController jobController = new JobController();
         DriverController driverController = new DriverController();
@@ -70,3 +82,4 @@ public class Main {
 
     }
 }
+
