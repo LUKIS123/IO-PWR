@@ -42,9 +42,8 @@ public class AdministratorApplication implements ApplicationInterface {
         }
     }
 
-
     private void verifyJobs() {
-        JobDriverAssignmentDto jobDriverAssignmentDto = jobController.acceptForConsideration(JobStatus.PAID);
+        JobDriverAssignmentDto jobDriverAssignmentDto = jobController.acceptForConsideration();
         int decision = Job.jobView.verifyView(jobDriverAssignmentDto.job, jobDriverAssignmentDto.driver);
         if (decision == 0) {
             jobController.setJobAsVerified(jobDriverAssignmentDto.job.getJobId());

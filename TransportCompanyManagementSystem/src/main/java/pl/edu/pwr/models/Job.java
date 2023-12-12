@@ -135,4 +135,8 @@ public class Job {
     public void setDriverId(int driverId) {
         this.driverId = driverId;
     }
+
+    public void setJobId(int jobId) {
+        this.jobId = jobId;
+    }
 }

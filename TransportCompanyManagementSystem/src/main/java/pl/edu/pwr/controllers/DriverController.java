@@ -3,7 +3,6 @@ package pl.edu.pwr.controllers;
 import pl.edu.pwr.Repositories.DriverRepository;
 import pl.edu.pwr.models.Driver;
 
-import java.sql.SQLException;
 import java.util.List;
 
 public class DriverController {
@@ -14,66 +13,42 @@ public class DriverController {
     }
 
     public void setStatusOnShift(int id) {
-        try {
-            Driver byId = driverRepository.getById(id);
-            byId.setDuringRest(false);
-            driverRepository.update(id, byId);
-            Driver.driverView.makeAction(byId);
-
-        } catch (SQLException e) {
-
-        }
+        Driver byId = driverRepository.getById(id);
+        byId.setDuringRest(false);
+        Driver.driverView.makeAction(byId);
     }
 
     public void setStatusDuringRest(int id) {
-        try {
-            Driver byId = driverRepository.getById(id);
-            byId.setDuringRest(true);
-            driverRepository.update(id, byId);
-            Driver.driverView.makeAction(byId);
-        } catch (SQLException e) {
-
-        }
+        Driver byId = driverRepository.getById(id);
+        byId.setDuringRest(true);
+        Driver.driverView.makeAction(byId);
     }
 
     public void acceptJob(int id) {
-        try {
-            Driver byId = driverRepository.getById(id);
-            byId.setDuringExecutionOfOrder(true);
-            driverRepository.update(id, byId);
-            Driver.driverView.makeAction(byId);
-        } catch (SQLException e) {
-
-        }
+        Driver byId = driverRepository.getById(id);
+        byId.setDuringExecutionOfOrder(true);
+        Driver.driverView.makeAction(byId);
     }
 
     public void finishJob(int id) {
-        try {
-            Driver byId = driverRepository.getById(id);
-            byId.setDuringExecutionOfOrder(false);
-            driverRepository.update(id, byId);
-            Driver.driverView.makeAction(byId);
-        } catch (SQLException e) {
-
-        }
+        Driver byId = driverRepository.getById(id);
+        byId.setDuringExecutionOfOrder(false);
+        Driver.driverView.makeAction(byId);
     }
 
     public Driver listAvailableDrivers() {
-        try {
-            List<Driver> list = driverRepository.getAvailableDrivers();
-            int id = Driver.driverView.listDrivers(list);
-            return list.stream().filter(x -> x.getId() == id).findFirst().get();
-        } catch (SQLException e) {
-            return null;
-        }
+        List<Driver> list = driverRepository.getAvailableDrivers();
+        int id = Driver.driverView.listDrivers(list);
+        return list
+                .stream()
+                .filter(x -> x.getId() == id)
+                .findFirst()
+                .get();
     }
 
     public void displayDriverInfo(int driverId) {
-        try {
-            Driver byId = driverRepository.getById(driverId);
-            Driver.driverView.displayDriverInfo(byId);
-        } catch (SQLException e) {
-        }
+        Driver byId = driverRepository.getById(driverId);
+        Driver.driverView.displayDriverInfo(byId);
     }
 
 }

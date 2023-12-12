@@ -3,13 +3,14 @@ package pl.edu.pwr.models;
 import pl.edu.pwr.models.enums.UserType;
 
 public class User {
-    private int clientId;
+    private int id;
     UserType userType;
     private final String username;
 
-    public User(String username) {
+    public User(int id, String username, UserType userType) {
+        this.id = id;
         this.username = username;
-        this.userType = UserType.CLIENT;
+        this.userType = userType;
     }
 
     public UserType getUserType() {
@@ -21,6 +22,6 @@ public class User {
     }
 
     public int getId() {
-        return clientId;
+        return id;
     }
 }

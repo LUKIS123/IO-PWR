@@ -3,34 +3,40 @@ package pl.edu.pwr.Repositories;
 import pl.edu.pwr.models.User;
 
 import java.util.List;
+import java.util.Objects;
 
-public class UserRepository implements RepositoryInterface<User> {
+public class UserRepository extends DataStore implements RepositoryInterface<User> {
     @Override
     public List<User> getAll() {
-        return null;
+        return userList;
     }
 
     @Override
     public User getById(int id) {
-        return null;
+        return userList
+                .stream()
+                .filter(user -> user.getId() == id)
+                .findFirst()
+                .get();
     }
 
     @Override
     public void insert(User model) {
-
-    }
-
-    @Override
-    public void update(int id, User model) {
-
+        userList.add(model);
+        ++USER_SEQUENCE;
     }
 
     @Override
     public void delete(int id) {
-
+        User byId = getById(id);
+        userList.remove(byId);
     }
 
     public User getByUsername(String username) {
-        return null;
+        return userList
+                .stream()
+                .filter(user -> Objects.equals(user.getUsername(), username))
+                .findFirst()
+                .get();
     }
 }

@@ -4,29 +4,30 @@ import pl.edu.pwr.models.JobHistoryEntry;
 
 import java.util.List;
 
-public class JobHistoryRepository implements RepositoryInterface<JobHistoryEntry> {
+public class JobHistoryRepository extends DataStore implements RepositoryInterface<JobHistoryEntry> {
     @Override
     public List<JobHistoryEntry> getAll() {
-        return null;
+        return historyEntryList;
     }
 
     @Override
     public JobHistoryEntry getById(int id) {
-        return null;
+        return historyEntryList
+                .stream()
+                .filter(h -> h.getId() == id)
+                .findFirst()
+                .get();
     }
 
     @Override
     public void insert(JobHistoryEntry model) {
-
-    }
-
-    @Override
-    public void update(int id, JobHistoryEntry model) {
-
+        historyEntryList.add(model);
+        ++HISTORY_ENTRY_SEQUENCE;
     }
 
     @Override
     public void delete(int id) {
-
+        JobHistoryEntry byId = getById(id);
+        historyEntryList.remove(byId);
     }
 }
