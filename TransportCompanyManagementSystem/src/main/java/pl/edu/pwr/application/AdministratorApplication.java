@@ -29,19 +29,7 @@ public class AdministratorApplication implements ApplicationInterface {
                 jobController.listJobByStatus(JobStatus.PAID);
 
             case 2:
-                JobDriverAssignmentDto jobDriverAssignmentDto = jobController.acceptForConsideration(JobStatus.PAID);
-                int decision = Job.jobView.verifyView(jobDriverAssignmentDto.job, jobDriverAssignmentDto.driver);
-                if (decision == 0) {
-                    jobController.setJobAsVerified(jobDriverAssignmentDto.job.getJobId());
-                } else if (decision == 1) {
-                    System.out.println("Wybierz kierowce");
-                    Driver newDriver = driverController.listAvailableDrivers();
-                    // zapis nowego kierowcy
-                    jobController.assignDriverToJob(newDriver, jobDriverAssignmentDto.job);
-                    jobController.setJobAsVerified(jobDriverAssignmentDto.job.getJobId());
-                } else {
-                    jobController.setJobAsRejected(jobDriverAssignmentDto.job.getJobId());
-                }
+                verifyJobs();
 
             case 3:
                 jobController.listAllJobs();
@@ -51,6 +39,23 @@ public class AdministratorApplication implements ApplicationInterface {
 
             default:
                 return;
+        }
+    }
+
+
+    private void verifyJobs() {
+        JobDriverAssignmentDto jobDriverAssignmentDto = jobController.acceptForConsideration(JobStatus.PAID);
+        int decision = Job.jobView.verifyView(jobDriverAssignmentDto.job, jobDriverAssignmentDto.driver);
+        if (decision == 0) {
+            jobController.setJobAsVerified(jobDriverAssignmentDto.job.getJobId());
+        } else if (decision == 1) {
+            System.out.println("Wybierz kierowce");
+            Driver newDriver = driverController.listAvailableDrivers();
+            // zapis nowego kierowcy
+            jobController.assignDriverToJob(newDriver, jobDriverAssignmentDto.job);
+            jobController.setJobAsVerified(jobDriverAssignmentDto.job.getJobId());
+        } else {
+            jobController.setJobAsRejected(jobDriverAssignmentDto.job.getJobId());
         }
     }
 

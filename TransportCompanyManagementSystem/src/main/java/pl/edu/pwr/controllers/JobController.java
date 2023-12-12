@@ -133,8 +133,8 @@ public class JobController {
         int choice = Job.jobView.listAll(byUserId);
         Job job = byUserId.stream().filter(x -> x.getJobId() == choice).findFirst().get();
 
-        boolean b = Job.jobView.tryMakePayment(job);
-        if (b) {
+        boolean paymentConfirmed = Job.jobView.tryMakePayment(job);
+        if (paymentConfirmed == true) {
             setJobAsPaid(job.getJobId());
         } else {
             setJobAsCancelled(job.getJobId());
