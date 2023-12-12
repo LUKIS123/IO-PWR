@@ -16,6 +16,7 @@ public class DriverController {
     public void setStatusOnShift(int id) {
         try {
             Driver byId = driverRepository.getById(id);
+            byId.setDuringRest(false);
             driverRepository.update(id, byId);
             Driver.driverView.makeAction(byId);
 
@@ -35,9 +36,31 @@ public class DriverController {
         }
     }
 
+    public void acceptJob(int id) {
+        try {
+            Driver byId = driverRepository.getById(id);
+            byId.setDuringExecutionOfOrder(true);
+            driverRepository.update(id, byId);
+            Driver.driverView.makeAction(byId);
+        } catch (SQLException e) {
+
+        }
+    }
+
+    public void finishJob(int id) {
+        try {
+            Driver byId = driverRepository.getById(id);
+            byId.setDuringExecutionOfOrder(false);
+            driverRepository.update(id, byId);
+            Driver.driverView.makeAction(byId);
+        } catch (SQLException e) {
+
+        }
+    }
+
     public Driver listAvailableDrivers() {
         try {
-            List<Driver> list = driverRepository.getAll().stream().filter(x -> (!x.isDuringExecutionOfOrder() && !x.isDuringRest())).toList();
+            List<Driver> list = driverRepository.getAvailableDrivers();
             int id = Driver.driverView.listDrivers(list);
             return list.stream().filter(x -> x.getId() == id).findFirst().get();
         } catch (SQLException e) {

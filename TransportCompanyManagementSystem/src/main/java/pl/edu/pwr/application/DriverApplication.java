@@ -28,9 +28,11 @@ public class DriverApplication implements ApplicationInterface {
             case 2:
                 if (assignedJob == null) return;
                 jobController.acceptJob(assignedJob.getJobId());
+                driverController.acceptJob(user.getId());
             case 3:
                 if (assignedJob == null) return;
                 jobController.setJobAsFinished(assignedJob.getJobId());
+                driverController.finishJob(user.getId());
             case 4:
                 driverController.setStatusDuringRest(user.getId());
             case 5:

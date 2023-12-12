@@ -32,10 +32,15 @@ public class JobController {
     }
 
     public Job listJobByStatus(JobStatus status) {
-        List<JobDriverAssignmentDto> byStatus = jobRepository.getByStatusWithDriverSuggestion(status);
+        List<Job> byStatus = new ArrayList<>();
+        try {
+            byStatus = jobRepository.getByStatus(status);
+        } catch (SQLException e) {
+
+        }
         // todo: wszystkim jobom dac status verification process
-        int i = Job.jobView.listOrdersWithDriverAssigment(byStatus);
-        return byStatus.stream().filter(x -> x.driver.getId() == i).findFirst().get().job;
+        int i = Job.jobView.listAll(byStatus);
+        return byStatus.stream().filter(x -> x.getJobId() == i).findFirst().get();
     }
 
     public int listJobsByOwner(int userId) {
@@ -50,19 +55,31 @@ public class JobController {
     }
 
     public JobDriverAssignmentDto acceptForConsideration(JobStatus status) {
-        List<JobDriverAssignmentDto> list = jobRepository.getByStatusWithDriverSuggestion(status).stream().toList();
+        List<JobDriverAssignmentDto> list = new ArrayList<>();
+        try {
+            list = jobRepository.getByStatusWithDriverSuggestion(status).stream().toList();
+        } catch (SQLException e) {
+
+        }
+
         int i = Job.jobView.listOrdersWithDriverAssigment(list);
         return list.stream().filter(x -> x.job.getJobId() == i).findFirst().get();
     }
 
     public void assignDriverToJob(Driver driver, Job job) {
-        jobRepository.updateJobDriverAssignment(driver.getId());
-        Job.jobView.displayDriverJobInfo(driver, job);
+        try {
+            jobRepository.updateJobDriverAssignment(driver.getId(), job.getJobId());
+            Job.jobView.displayDriverJobInfo(driver, job);
+        } catch (SQLException e) {
+
+        }
     }
 
     public void setJobAsPaid(int jobId) {
         try {
             Job byId = jobRepository.getById(jobId);
+            byId.setStatus(JobStatus.PAID);
+            jobRepository.update(byId.getJobId(), byId);
             Job.jobView.displayJobInfo(byId);
         } catch (SQLException e) {
 
@@ -72,6 +89,8 @@ public class JobController {
     public void setJobAsCancelled(int jobId) {
         try {
             Job byId = jobRepository.getById(jobId);
+            byId.setStatus(JobStatus.CANCELLED);
+            jobRepository.update(jobId, byId);
             Job.jobView.displayJobInfo(byId);
         } catch (SQLException e) {
         }
@@ -80,6 +99,8 @@ public class JobController {
     public void setJobAsVerified(int jobId) {
         try {
             Job byId = jobRepository.getById(jobId);
+            byId.setStatus(JobStatus.VERIFIED);
+            jobRepository.update(jobId, byId);
             Job.jobView.displayJobInfo(byId);
         } catch (SQLException e) {
         }
@@ -88,6 +109,8 @@ public class JobController {
     public void setJobAsRejected(int jobId) {
         try {
             Job byId = jobRepository.getById(jobId);
+            byId.setStatus(JobStatus.REJECTED);
+            jobRepository.update(jobId, byId);
             Job.jobView.displayJobInfo(byId);
         } catch (SQLException e) {
 

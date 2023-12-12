@@ -131,4 +131,8 @@ public class Job {
     public void setStatus(JobStatus status) {
         this.status = status;
     }
+
+    public void setDriverId(int driverId) {
+        this.driverId = driverId;
+    }
 }

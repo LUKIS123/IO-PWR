@@ -64,7 +64,7 @@ public class DriverRepository implements RepositoryInterface<Driver> {
     public void insert(Driver model) throws SQLException {
 
         String query = "INSERT INTO Drivers (account_id, nick, duringRest, duringExecutionOfOrder)" +
-                "VALUES (nextval('Drivers_ID_seq'), " + "\'"+model.getUsername()+"\'" + ","
+                "VALUES (nextval('Drivers_ID_seq'), " + "\'" + model.getUsername() + "\'" + ","
                 + model.isDuringRest() + ","
                 + model.isDuringExecutionOfOrder() + ");";
         DatabaseConnectionSettings.executeQuery(query);

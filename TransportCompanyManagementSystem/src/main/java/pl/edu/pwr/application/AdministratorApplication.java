@@ -33,7 +33,7 @@ public class AdministratorApplication implements ApplicationInterface {
                 int decision = Job.jobView.verifyView(jobDriverAssignmentDto.job, jobDriverAssignmentDto.driver);
                 if (decision == 0) {
                     jobController.setJobAsVerified(jobDriverAssignmentDto.job.getJobId());
-                } else if (decision == 2) {
+                } else if (decision == 1) {
                     System.out.println("Wybierz kierowce");
                     Driver newDriver = driverController.listAvailableDrivers();
                     // zapis nowego kierowcy
