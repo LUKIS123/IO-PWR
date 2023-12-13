@@ -50,15 +50,13 @@ public class JobController {
     }
 
     public JobDriverAssignmentDto acceptForConsideration() {
-        List<JobDriverAssignmentDto> list = jobRepository
-                .getByStatusWithDriverSuggestion()
-                .stream()
-                .toList();
+        List<JobDriverAssignmentDto> list = jobRepository.getByStatusWithDriverSuggestion();
 
-        int i = Job.jobView.listOrdersWithDriverAssigment(list);
+        int chosenJobId = Job.jobView.listOrdersWithDriverAssigment(list);
+
         return list
                 .stream()
-                .filter(x -> x.job.getJobId() == i)
+                .filter(assignmentDto -> assignmentDto.job.getJobId() == chosenJobId)
                 .findFirst()
                 .get();
     }
@@ -104,19 +102,19 @@ public class JobController {
     public void makePayment(User user) {
         List<Job> byUserId = jobRepository.getByUserId(user.getId());
         int choice = Job.jobView.listAll(byUserId);
-        Job job = byUserId
+        Job chosenJob = byUserId
                 .stream()
-                .filter(x -> x.getJobId() == choice)
+                .filter(job -> job.getJobId() == choice)
                 .findFirst()
                 .get();
 
-        boolean paymentConfirmed = Job.jobView.tryMakePayment(job);
+        boolean paymentConfirmed = Job.jobView.tryMakePayment(chosenJob);
         if (paymentConfirmed) {
-            setJobAsPaid(job.getJobId());
-            jobHistoryRepository.insert(new JobHistoryEntry(job.getJobId(), JobStatus.NEWLY_ADDED, JobStatus.PAID));
+            setJobAsPaid(chosenJob.getJobId());
+            jobHistoryRepository.insert(new JobHistoryEntry(chosenJob.getJobId(), JobStatus.NEWLY_ADDED, JobStatus.PAID));
         } else {
-            setJobAsCancelled(job.getJobId());
-            jobHistoryRepository.insert(new JobHistoryEntry(job.getJobId(), JobStatus.NEWLY_ADDED, JobStatus.CANCELLED));
+            setJobAsCancelled(chosenJob.getJobId());
+            jobHistoryRepository.insert(new JobHistoryEntry(chosenJob.getJobId(), JobStatus.NEWLY_ADDED, JobStatus.CANCELLED));
         }
     }
 
