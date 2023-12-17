@@ -70,12 +70,14 @@ public class JobController {
     public void setJobAsPaid(int jobId) {
         Job byId = jobRepository.getById(jobId);
         byId.setStatus(JobStatus.PAID);
+        jobHistoryRepository.insert(new JobHistoryEntry(jobId, JobStatus.NEWLY_ADDED, JobStatus.PAID));
         Job.jobView.displayJobInfo(byId);
     }
 
     public void setJobAsCancelled(int jobId) {
         Job byId = jobRepository.getById(jobId);
         byId.setStatus(JobStatus.CANCELLED);
+        jobHistoryRepository.insert(new JobHistoryEntry(jobId, JobStatus.NEWLY_ADDED, JobStatus.CANCELLED));
         Job.jobView.displayJobInfo(byId);
     }
 

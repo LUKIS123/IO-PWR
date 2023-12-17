@@ -47,10 +47,13 @@ public class JobRepository extends DataStore implements RepositoryInterface<Job>
     }
 
     public List<Job> getByStatus(JobStatus status) {
-        return jobList
-                .stream()
-                .filter(job -> job.getStatus() == status)
-                .toList();
+        List<Job> byStatus = new ArrayList<>();
+        for (Job job : jobList) {
+            if (job.getStatus() == status) {
+                byStatus.add(job);
+            }
+        }
+        return byStatus;
     }
 
     public List<JobDriverAssignmentDto> getByStatusWithDriverSuggestion() {
