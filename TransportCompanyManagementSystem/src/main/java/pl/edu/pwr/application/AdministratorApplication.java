@@ -23,22 +23,25 @@ public class AdministratorApplication implements ApplicationInterface {
 
     @Override
     public void index() {
-        int choice = applicationView.adminMenu();
-        switch (choice) {
-            case 1:
-                jobController.listJobByStatus(JobStatus.PAID);
-
-            case 2:
-                verifyJobs();
-
-            case 3:
-                jobController.listAllJobs();
-
-            case 4:
-                jobController.listJobByStatus(JobStatus.FINISHED);
-
-            default:
-                return;
+        int choice = -1;
+        while (choice != 0) {
+            choice = applicationView.adminMenu();
+            switch (choice) {
+                case 1:
+                    jobController.listJobByStatus(JobStatus.PAID);
+                    break;
+                case 2:
+                    verifyJobs();
+                    break;
+                case 3:
+                    jobController.listAllJobs();
+                    break;
+                case 4:
+                    jobController.listJobByStatus(JobStatus.FINISHED);
+                    break;
+                default:
+                    break;
+            }
         }
     }
 

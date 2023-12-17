@@ -16,20 +16,24 @@ public class ClientApplication implements ApplicationInterface {
 
     @Override
     public void index() {
-        int choice = applicationView.clientMenu();
-        switch (choice) {
-            case 1:
-                jobController.createNewOrder(user.getId());
-
-            case 2:
-                jobController.makePayment(user);
-
-            case 3:
-                jobController.listJobsByOwner(user.getId());
-
-            default:
-                return;
+        int choice = -1;
+        while (choice != 0) {
+            choice = applicationView.clientMenu();
+            switch (choice) {
+                case 1:
+                    jobController.createNewOrder(user.getId());
+                    break;
+                case 2:
+                    jobController.makePayment(user);
+                    break;
+                case 3:
+                    jobController.listJobsByOwner(user.getId());
+                    break;
+                default:
+                    break;
+            }
         }
+
     }
 
 }
