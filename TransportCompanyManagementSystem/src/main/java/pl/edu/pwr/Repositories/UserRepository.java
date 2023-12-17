@@ -33,10 +33,11 @@ public class UserRepository extends DataStore implements RepositoryInterface<Use
     }
 
     public User getByUsername(String username) {
-        return userList
-                .stream()
-                .filter(user -> Objects.equals(user.getUsername(), username))
-                .findFirst()
-                .get();
+        for (User user : userList) {
+            if (Objects.equals(user.getUsername(), username)) {
+                return user;
+            }
+        }
+        return null;
     }
 }

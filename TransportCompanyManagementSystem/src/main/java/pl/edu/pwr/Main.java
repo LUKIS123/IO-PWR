@@ -15,15 +15,13 @@ public class Main {
 
         UserRepository userRepository = new UserRepository();
         String username = ApplicationView.initializeIndex();
-        User user;
+        User user = userRepository.getByUsername(username);
 
-        try {
-            user = userRepository.getByUsername(username);
-        } catch (Exception e) {
+        if (user == null) {
             System.out.println("Niepoprawna nazwa!");
             return;
         }
-
+        
         JobController jobController = new JobController();
         DriverController driverController = new DriverController();
 
