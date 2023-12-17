@@ -16,11 +16,12 @@ public class JobRepository extends DataStore implements RepositoryInterface<Job>
 
     @Override
     public Job getById(int id) {
-        return jobList
-                .stream()
-                .filter(job -> job.getJobId() == id)
-                .findFirst()
-                .get();
+        for (Job job : jobList) {
+            if (job.getJobId() == id) {
+                return job;
+            }
+        }
+        return null;
     }
 
     @Override
@@ -36,10 +37,13 @@ public class JobRepository extends DataStore implements RepositoryInterface<Job>
     }
 
     public List<Job> getByUserId(int userId) {
-        return jobList
-                .stream()
-                .filter(job -> job.getClientId() == userId)
-                .toList();
+        List<Job> byUserId = new ArrayList<>();
+        for (Job job : jobList) {
+            if (job.getClientId() == userId) {
+                byUserId.add(job);
+            }
+        }
+        return byUserId;
     }
 
     public List<Job> getByStatus(JobStatus status) {
@@ -52,10 +56,12 @@ public class JobRepository extends DataStore implements RepositoryInterface<Job>
     public List<JobDriverAssignmentDto> getByStatusWithDriverSuggestion() {
         List<Job> byStatus = getByStatus(JobStatus.PAID);
 
-        List<Driver> availableDrivers = driverList
-                .stream()
-                .filter(driver -> !driver.isDuringExecutionOfOrder() && !driver.isDuringRest()).
-                toList();
+        List<Driver> availableDrivers = new ArrayList<>();
+        for (Driver driver : driverList) {
+            if (!driver.isDuringExecutionOfOrder() && !driver.isDuringRest()) {
+                availableDrivers.add(driver);
+            }
+        }
 
         if (availableDrivers.isEmpty()) {
             availableDrivers = driverList;

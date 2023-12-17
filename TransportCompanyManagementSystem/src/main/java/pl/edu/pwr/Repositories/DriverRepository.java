@@ -4,6 +4,7 @@ import pl.edu.pwr.models.Driver;
 import pl.edu.pwr.models.User;
 import pl.edu.pwr.models.enums.UserType;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class DriverRepository extends DataStore implements RepositoryInterface<Driver> {
@@ -43,10 +44,13 @@ public class DriverRepository extends DataStore implements RepositoryInterface<D
     }
 
     public List<Driver> getAvailableDrivers() {
-        return driverList
-                .stream()
-                .filter(driver -> !driver.isDuringExecutionOfOrder() && !driver.isDuringRest()).
-                toList();
+        List<Driver> availableDrivers = new ArrayList<>();
+        for (Driver driver : driverList) {
+            if (!driver.isDuringExecutionOfOrder() && !driver.isDuringRest()) {
+                availableDrivers.add(driver);
+            }
+        }
+        return availableDrivers;
     }
 
 }
