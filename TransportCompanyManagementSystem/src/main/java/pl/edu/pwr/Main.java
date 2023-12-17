@@ -21,17 +21,23 @@ public class Main {
             System.out.println("Niepoprawna nazwa!");
             return;
         }
-        
+
         JobController jobController = new JobController();
         DriverController driverController = new DriverController();
 
         switch (user.getUserType()) {
-            case CLIENT -> new ClientApplication(user, jobController).index();
-            case ADMINISTRATOR -> new AdministratorApplication(user, jobController, driverController).index();
-            case DRIVER -> new DriverApplication(user, jobController, driverController).index();
-            default -> {
+            case CLIENT:
+                new ClientApplication(user, jobController).index();
+                break;
+            case ADMINISTRATOR:
+                new AdministratorApplication(user, jobController, driverController).index();
+                break;
+            case DRIVER:
+                new DriverApplication(user, jobController, driverController).index();
+                break;
+            default:
                 System.out.println("Niepoprawna nazwa!");
-            }
+                break;
         }
 
     }
