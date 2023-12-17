@@ -39,11 +39,14 @@ public class DriverController {
     public Driver listAvailableDrivers() {
         List<Driver> list = driverRepository.getAvailableDrivers();
         int chosenDriverId = Driver.driverView.listDrivers(list);
-        return list
-                .stream()
-                .filter(driver -> driver.getId() == chosenDriverId)
-                .findFirst()
-                .get();
+
+        Driver chosenDriver = null;
+        for (Driver driver : list) {
+            if (driver.getId() == chosenDriverId) {
+                chosenDriver = driver;
+            }
+        }
+        return chosenDriver;
     }
 
     public void displayDriverInfo(int driverId) {

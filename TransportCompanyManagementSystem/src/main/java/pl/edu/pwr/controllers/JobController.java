@@ -51,14 +51,15 @@ public class JobController {
 
     public JobDriverAssignmentDto acceptForConsideration() {
         List<JobDriverAssignmentDto> list = jobRepository.getByStatusWithDriverSuggestion();
-
         int chosenJobId = Job.jobView.listOrdersWithDriverAssigment(list);
 
-        return list
-                .stream()
-                .filter(assignmentDto -> assignmentDto.job.getJobId() == chosenJobId)
-                .findFirst()
-                .get();
+        JobDriverAssignmentDto dto = null;
+        for (JobDriverAssignmentDto assignmentDto : list) {
+            if (assignmentDto.job.getJobId() == chosenJobId) {
+                dto = assignmentDto;
+            }
+        }
+        return dto;
     }
 
     public void assignDriverToJob(Driver driver, Job job) {
@@ -102,11 +103,13 @@ public class JobController {
     public void makePayment(User user) {
         List<Job> byUserId = jobRepository.getByUserId(user.getId());
         int choice = Job.jobView.listAll(byUserId);
-        Job chosenJob = byUserId
-                .stream()
-                .filter(job -> job.getJobId() == choice)
-                .findFirst()
-                .get();
+
+        Job chosenJob = null;
+        for (Job job : byUserId) {
+            if (job.getJobId() == choice) {
+                chosenJob = job;
+            }
+        }
 
         boolean paymentConfirmed = Job.jobView.tryMakePayment(chosenJob);
         if (paymentConfirmed) {
