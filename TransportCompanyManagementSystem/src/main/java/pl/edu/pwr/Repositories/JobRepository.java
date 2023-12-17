@@ -77,8 +77,11 @@ public class JobRepository extends DataStore implements RepositoryInterface<Job>
             if (i >= size) {
                 i = 0;
             }
-            job.setDriverId(availableDrivers.get(i).getId());
-            assignmentDtos.add(new JobDriverAssignmentDto(availableDrivers.get(i), job));
+
+            Driver driverToAssign = availableDrivers.get(i);
+
+            job.setDriverId(driverToAssign.getId());
+            assignmentDtos.add(new JobDriverAssignmentDto(driverToAssign, job));
             ++i;
         }
         return assignmentDtos;
