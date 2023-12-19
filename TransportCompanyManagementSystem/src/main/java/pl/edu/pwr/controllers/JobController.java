@@ -8,6 +8,7 @@ import pl.edu.pwr.models.Driver;
 import pl.edu.pwr.models.Job;
 import pl.edu.pwr.models.JobHistoryEntry;
 import pl.edu.pwr.models.User;
+import pl.edu.pwr.models.enums.CargoType;
 import pl.edu.pwr.models.enums.JobStatus;
 
 import java.util.List;
@@ -113,6 +114,8 @@ public class JobController {
             }
         }
 
+        calculateCost(chosenJob);
+
         boolean paymentConfirmed = Job.jobView.tryMakePayment(chosenJob);
         if (paymentConfirmed) {
             setJobAsPaid(chosenJob.getJobId());
@@ -142,6 +145,30 @@ public class JobController {
 
         Job.jobView.displayJobInfo(assignedJob);
         return assignedJob;
+    }
+
+    public void calculateCost(Job job) {
+        int weight = job.getWeight();
+        int distance = job.getDistance();
+
+        int cargoTypeAddedCost = 0;
+        CargoType cargoType = job.getCargoType();
+        switch (cargoType) {
+            case HEAVY:
+                cargoTypeAddedCost = 500;
+                break;
+            case HAZARDOUS:
+                cargoTypeAddedCost = 1000;
+                break;
+            case FRAGILE:
+                cargoTypeAddedCost = 700;
+                break;
+            default:
+                cargoTypeAddedCost = 0;
+                break;
+        }
+
+        job.setCost((int) (1.2 * distance + cargoTypeAddedCost + 0.8 * weight));
     }
 
 }

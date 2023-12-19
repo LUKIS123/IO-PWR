@@ -11,6 +11,7 @@ public class Job {
     private final int clientId;
     private final CargoType cargoType;
     private JobStatus status;
+    private int cost;
     private final int distance; // zmieniłem na int bo nie bede liczył klienta co do metrów
     private final int weight; // zmieniłem na int bo nie bede liczył klienta co do gramów
     public boolean isPaid = false;
@@ -79,7 +80,7 @@ public class Job {
     private CargoType mapTypeToEnum(String s) {
         switch (s) {
             case "LIGHT" -> {
-                return CargoType.LIGHT;
+                return CargoType.REGULAR;
             }
             case "HEAVY" -> {
                 return CargoType.HEAVY;
@@ -138,5 +139,13 @@ public class Job {
 
     public void setJobId(int jobId) {
         this.jobId = jobId;
+    }
+
+    public int getCost() {
+        return cost;
+    }
+
+    public void setCost(int cost) {
+        this.cost = cost;
     }
 }
