@@ -36,4 +36,12 @@ public class Driver extends User {
         this.duringRest = duringRest;
     }
 
+    @Override
+    public String toString() {
+        return "Driver{" +
+                "Id=" + this.getId() +
+                ", duringExecutionOfOrder=" + duringExecutionOfOrder +
+                ", duringRest=" + duringRest +
+                '}';
+    }
 }

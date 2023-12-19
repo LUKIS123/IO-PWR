@@ -12,11 +12,18 @@ import java.util.Scanner;
 public class JobView {
 
     public boolean tryMakePayment(Job job) {
-        return false;
+        System.out.println("Koszt: " + job.getCost());
+        System.out.println("Tak kliknij-> 1, Nie -> dowolny inny");
+        Scanner scanner = new Scanner(System.in);
+
+        return scanner.nextInt() == 1;
     }
 
     public int listAll(List<Job> jobs) {
-        return 0;
+        jobs.forEach(System.out::println);
+        System.out.print("Wpisz ID: ");
+        Scanner scanner = new Scanner(System.in);
+        return scanner.nextInt();
     }
 
     public int verifyView(Job job, Driver driver) {
@@ -33,6 +40,7 @@ public class JobView {
     }
 
     public void displayJobInfo(Job job) {
+        System.out.println(job.toString());
     }
 
     public void displayDriverJobInfo(Driver driver, Job job) {
@@ -43,10 +51,15 @@ public class JobView {
     }
 
     public Optional<Integer> listOrders(List<Job> byUserId) {
+        byUserId.forEach(System.out::println);
         return Optional.empty();
     }
 
     public int listOrdersWithDriverAssigment(List<JobDriverAssignmentDto> jobList) {
-        return 0;
+        System.out.println("Wybierz wspisujac ID zlecenia:");
+        jobList.forEach(System.out::println);
+        System.out.print("ID zlecenia: ");
+        Scanner scanner = new Scanner(System.in);
+        return scanner.nextInt();
     }
 }

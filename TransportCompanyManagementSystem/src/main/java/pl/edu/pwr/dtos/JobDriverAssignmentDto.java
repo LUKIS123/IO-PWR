@@ -11,4 +11,12 @@ public class JobDriverAssignmentDto {
 
     public Driver driver;
     public Job job;
+
+    @Override
+    public String toString() {
+        return "JobDriverAssignmentDto{" +
+                "\ndriver=" + driver.toString() +
+                "\n, job=" + job.toString() +
+                "\n}";
+    }
 }

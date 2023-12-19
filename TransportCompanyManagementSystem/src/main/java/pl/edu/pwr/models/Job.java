@@ -130,15 +130,12 @@ public class Job {
     }
 
     public void setStatus(JobStatus status) {
+        this.isPaid = true;
         this.status = status;
     }
 
     public void setDriverId(int driverId) {
         this.driverId = driverId;
-    }
-
-    public void setJobId(int jobId) {
-        this.jobId = jobId;
     }
 
     public int getCost() {
@@ -147,5 +144,20 @@ public class Job {
 
     public void setCost(int cost) {
         this.cost = cost;
+    }
+
+    @Override
+    public String toString() {
+        return "Job{" +
+                "jobId=" + jobId +
+                ", driverId=" + driverId +
+                ", clientId=" + clientId +
+                ", cargoType=" + cargoType +
+                ", status=" + status +
+                ", cost=" + cost +
+                ", distance=" + distance +
+                ", weight=" + weight +
+                ", isPaid=" + isPaid +
+                '}';
     }
 }
