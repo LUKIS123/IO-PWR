@@ -22,16 +22,19 @@ public class DriverApplication implements ApplicationInterface {
     @Override
     public void index() {
         int choice = applicationView.driverMenu();
+        int assignedJobId;
         switch (choice) {
             case 1:
                 assignedJob = jobController.listJobInRealization(user.getId());
             case 2:
                 if (assignedJob == null) return;
-                jobController.acceptJob(assignedJob.getJobId());
+                assignedJobId = assignedJob.getJobId();
+                jobController.acceptJob(assignedJobId);
                 driverController.acceptJob(user.getId());
             case 3:
                 if (assignedJob == null) return;
-                jobController.setJobAsFinished(assignedJob.getJobId());
+                assignedJobId = assignedJob.getJobId();
+                jobController.setJobAsFinished(assignedJobId);
                 driverController.finishJob(user.getId());
             case 4:
                 driverController.setStatusDuringRest(user.getId());

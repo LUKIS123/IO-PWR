@@ -46,7 +46,9 @@ public class DriverRepository extends DataStore implements RepositoryInterface<D
     public List<Driver> getAvailableDrivers() {
         List<Driver> availableDrivers = new ArrayList<>();
         for (Driver driver : driverList) {
-            if (!driver.isDuringExecutionOfOrder() && !driver.isDuringRest()) {
+            boolean duringExecutionOfOrder = driver.isDuringExecutionOfOrder();
+            boolean duringRest = driver.isDuringRest();
+            if (!duringExecutionOfOrder && !duringRest) {
                 availableDrivers.add(driver);
             }
         }

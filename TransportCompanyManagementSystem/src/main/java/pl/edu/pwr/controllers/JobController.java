@@ -56,7 +56,8 @@ public class JobController {
 
         JobDriverAssignmentDto dto = null;
         for (JobDriverAssignmentDto assignmentDto : list) {
-            if (assignmentDto.job.getJobId() == chosenJobId) {
+            int jobId = assignmentDto.job.getJobId();
+            if (jobId == chosenJobId) {
                 dto = assignmentDto;
             }
         }
@@ -64,7 +65,9 @@ public class JobController {
     }
 
     public void assignDriverToJob(Driver driver, Job job) {
-        jobRepository.updateJobDriverAssignment(driver.getId(), job.getJobId());
+        int driverId = driver.getId();
+        int jobId = job.getJobId();
+        jobRepository.updateJobDriverAssignment(driverId, jobId);
         Job.jobView.displayDriverJobInfo(driver, job);
     }
 
@@ -109,7 +112,8 @@ public class JobController {
 
         Job chosenJob = null;
         for (Job job : byUserId) {
-            if (job.getJobId() == choice) {
+            int jobId = job.getJobId();
+            if (jobId == choice) {
                 chosenJob = job;
             }
         }
@@ -117,12 +121,13 @@ public class JobController {
         calculateCost(chosenJob);
 
         boolean paymentConfirmed = Job.jobView.tryMakePayment(chosenJob);
+        int chosenJobJobId = chosenJob.getJobId();
         if (paymentConfirmed) {
-            setJobAsPaid(chosenJob.getJobId());
-            jobHistoryRepository.insert(new JobHistoryEntry(chosenJob.getJobId(), JobStatus.NEWLY_ADDED, JobStatus.PAID));
+            setJobAsPaid(chosenJobJobId);
+            jobHistoryRepository.insert(new JobHistoryEntry(chosenJobJobId, JobStatus.NEWLY_ADDED, JobStatus.PAID));
         } else {
-            setJobAsCancelled(chosenJob.getJobId());
-            jobHistoryRepository.insert(new JobHistoryEntry(chosenJob.getJobId(), JobStatus.NEWLY_ADDED, JobStatus.CANCELLED));
+            setJobAsCancelled(chosenJobJobId);
+            jobHistoryRepository.insert(new JobHistoryEntry(chosenJobJobId, JobStatus.NEWLY_ADDED, JobStatus.CANCELLED));
         }
     }
 

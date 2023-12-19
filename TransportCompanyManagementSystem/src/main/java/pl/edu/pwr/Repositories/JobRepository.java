@@ -17,7 +17,8 @@ public class JobRepository extends DataStore implements RepositoryInterface<Job>
     @Override
     public Job getById(int id) {
         for (Job job : jobList) {
-            if (job.getJobId() == id) {
+            int jobId = job.getJobId();
+            if (jobId == id) {
                 return job;
             }
         }
@@ -39,7 +40,8 @@ public class JobRepository extends DataStore implements RepositoryInterface<Job>
     public List<Job> getByUserId(int userId) {
         List<Job> byUserId = new ArrayList<>();
         for (Job job : jobList) {
-            if (job.getClientId() == userId) {
+            int clientId = job.getClientId();
+            if (clientId == userId) {
                 byUserId.add(job);
             }
         }
@@ -49,7 +51,8 @@ public class JobRepository extends DataStore implements RepositoryInterface<Job>
     public List<Job> getByStatus(JobStatus status) {
         List<Job> byStatus = new ArrayList<>();
         for (Job job : jobList) {
-            if (job.getStatus() == status) {
+            JobStatus jobStatus = job.getStatus();
+            if (jobStatus == status) {
                 byStatus.add(job);
             }
         }
@@ -61,7 +64,9 @@ public class JobRepository extends DataStore implements RepositoryInterface<Job>
 
         List<Driver> availableDrivers = new ArrayList<>();
         for (Driver driver : driverList) {
-            if (!driver.isDuringExecutionOfOrder() && !driver.isDuringRest()) {
+            boolean duringExecutionOfOrder = driver.isDuringExecutionOfOrder();
+            boolean duringRest = driver.isDuringRest();
+            if (!duringExecutionOfOrder && !duringRest) {
                 availableDrivers.add(driver);
             }
         }
@@ -80,7 +85,8 @@ public class JobRepository extends DataStore implements RepositoryInterface<Job>
 
             Driver driverToAssign = availableDrivers.get(i);
 
-            job.setDriverId(driverToAssign.getId());
+            int driverToAssignId = driverToAssign.getId();
+            job.setDriverId(driverToAssignId);
             assignmentDtos.add(new JobDriverAssignmentDto(driverToAssign, job));
             ++i;
         }

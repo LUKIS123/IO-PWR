@@ -48,16 +48,18 @@ public class AdministratorApplication implements ApplicationInterface {
     private void verifyJobs() {
         JobDriverAssignmentDto jobDriverAssignmentDto = jobController.acceptForConsideration();
         int decision = Job.jobView.verifyView(jobDriverAssignmentDto.job, jobDriverAssignmentDto.driver);
+
+        int jobId = jobDriverAssignmentDto.job.getJobId();
         if (decision == 0) {
-            jobController.setJobAsVerified(jobDriverAssignmentDto.job.getJobId());
+            jobController.setJobAsVerified(jobId);
         } else if (decision == 1) {
             System.out.println("Wybierz kierowce");
             Driver newDriver = driverController.listAvailableDrivers();
             // zapis nowego kierowcy
             jobController.assignDriverToJob(newDriver, jobDriverAssignmentDto.job);
-            jobController.setJobAsVerified(jobDriverAssignmentDto.job.getJobId());
+            jobController.setJobAsVerified(jobId);
         } else {
-            jobController.setJobAsRejected(jobDriverAssignmentDto.job.getJobId());
+            jobController.setJobAsRejected(jobId);
         }
     }
 

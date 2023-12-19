@@ -42,7 +42,8 @@ public class DriverController {
 
         Driver chosenDriver = null;
         for (Driver driver : list) {
-            if (driver.getId() == chosenDriverId) {
+            int driverId = driver.getId();
+            if (driverId == chosenDriverId) {
                 chosenDriver = driver;
             }
         }
