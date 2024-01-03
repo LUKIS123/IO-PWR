@@ -35,7 +35,8 @@ public class UserRepository extends DataStore implements RepositoryInterface<Use
     public User getByUsername(String username) {
         for (User user : userList) {
             String currentUsername = user.getUsername();
-            if (Objects.equals(currentUsername, username)) {
+            boolean result = Objects.equals(currentUsername, username);
+            if (result == true) {
                 return user;
             }
         }

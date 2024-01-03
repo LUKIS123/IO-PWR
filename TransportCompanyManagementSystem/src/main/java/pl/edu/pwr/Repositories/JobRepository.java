@@ -71,7 +71,8 @@ public class JobRepository extends DataStore implements RepositoryInterface<Job>
             }
         }
 
-        if (availableDrivers.isEmpty()) {
+        boolean isEmpty = availableDrivers.isEmpty();
+        if (isEmpty == true) {
             availableDrivers = driverList;
         }
 
