@@ -33,4 +33,5 @@ public class DataStore {
             new User(USER_SEQUENCE++, "Anton", UserType.DRIVER))
     );
     protected static List<JobHistoryEntry> historyEntryList = new ArrayList<>();
+
 }

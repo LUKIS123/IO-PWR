@@ -6,6 +6,8 @@ import pl.edu.pwr.models.enums.UserType;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 
 public class DriverRepository extends DataStore implements RepositoryInterface<Driver> {
 
@@ -16,11 +18,15 @@ public class DriverRepository extends DataStore implements RepositoryInterface<D
 
     @Override
     public Driver getById(int id) {
-        return driverList
-                .stream()
-                .filter(driver -> driver.getId() == id)
-                .findFirst()
-                .get();
+        try {
+            return driverList
+                    .stream()
+                    .filter(driver -> driver.getId() == id)
+                    .findFirst()
+                    .get();
+        } catch (NoSuchElementException e) {
+            return null;
+        }
     }
 
     @Override
@@ -35,12 +41,11 @@ public class DriverRepository extends DataStore implements RepositoryInterface<D
         Driver byId = getById(id);
         driverList.remove(byId);
 
-        User user = userList
+        Optional<User> first = userList
                 .stream()
                 .filter(d -> d.getId() == id)
-                .findFirst()
-                .get();
-        userList.remove(user);
+                .findFirst();
+        first.ifPresent(user -> userList.remove(user));
     }
 
     public List<Driver> getAvailableDrivers() {
