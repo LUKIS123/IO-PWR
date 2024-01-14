@@ -71,6 +71,7 @@ public class JobController {
         Job.jobView.displayDriverJobInfo(driver, job);
     }
 
+    // todo
     public void setJobAsPaid(int jobId) {
         Job byId = jobRepository.getById(jobId);
         byId.setStatus(JobStatus.PAID);
@@ -78,6 +79,7 @@ public class JobController {
         Job.jobView.displayJobInfo(byId);
     }
 
+    // todo
     public void setJobAsCancelled(int jobId) {
         Job byId = jobRepository.getById(jobId);
         byId.setStatus(JobStatus.CANCELLED);
@@ -85,6 +87,7 @@ public class JobController {
         Job.jobView.displayJobInfo(byId);
     }
 
+    // todo
     public void setJobAsVerified(int jobId) {
         Job byId = jobRepository.getById(jobId);
         byId.setStatus(JobStatus.VERIFIED);
@@ -92,6 +95,7 @@ public class JobController {
         Job.jobView.displayJobInfo(byId);
     }
 
+    // todo
     public void setJobAsRejected(int jobId) {
         Job byId = jobRepository.getById(jobId);
         byId.setStatus(JobStatus.REJECTED);
@@ -99,6 +103,7 @@ public class JobController {
         Job.jobView.displayJobInfo(byId);
     }
 
+    // todo
     public void createNewOrder(int clientId) {
         CreateJobDto dto = Job.jobView.order();
         Job job = new Job(clientId, "NEWLY_ADDED", dto.cargoType.toString(), dto.distance, dto.weight);
@@ -141,6 +146,7 @@ public class JobController {
         Job.jobView.displayJobInfo(byId);
     }
 
+    // todo
     public Job listJobInRealization(int driverId) {
         Job assignedJob = null;
         try {
@@ -152,6 +158,7 @@ public class JobController {
         return assignedJob;
     }
 
+    // todo
     public void calculateCost(Job job) {
         int weight = job.getWeight();
         int distance = job.getDistance();

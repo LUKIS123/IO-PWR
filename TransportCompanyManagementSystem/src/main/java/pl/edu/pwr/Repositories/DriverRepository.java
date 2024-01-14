@@ -17,16 +17,12 @@ public class DriverRepository extends DataStore implements RepositoryInterface<D
     }
 
     @Override
-    public Driver getById(int id) {
-        try {
-            return driverList
-                    .stream()
-                    .filter(driver -> driver.getId() == id)
-                    .findFirst()
-                    .get();
-        } catch (NoSuchElementException e) {
-            return null;
-        }
+    public Driver getById(int id) throws NoSuchElementException {
+        return driverList
+                .stream()
+                .filter(driver -> driver.getId() == id)
+                .findFirst()
+                .get();
     }
 
     @Override
@@ -37,7 +33,7 @@ public class DriverRepository extends DataStore implements RepositoryInterface<D
     }
 
     @Override
-    public void delete(int id) {
+    public void delete(int id) throws NoSuchElementException {
         Driver byId = getById(id);
         driverList.remove(byId);
 
