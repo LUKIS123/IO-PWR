@@ -6,6 +6,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.api.extension.TestExecutionExceptionHandler;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import pl.edu.pwr.models.Driver;
 
 import java.util.NoSuchElementException;
@@ -105,17 +107,11 @@ class DriverRepositoryTest implements TestExecutionExceptionHandler {
         assertEquals(driverToInsert.isDuringRest(), driverFound.isDuringRest());
     }
 
-    @Test
     @ExtendWith(DriverRepositoryTest.class)
-    void delete() {
+    @ParameterizedTest
+    @ValueSource(ints = {10, -15, Integer.MAX_VALUE})
+    void delete(int id) {
         // Act
-
-        // Usuwanie nieistniejacego kierowcy, test rzucania wyjatku
-        repository.delete(Integer.MAX_VALUE);
-
-
-        // Usuwanie istniejacego kierowcy
-        int id = testDriverId;
         repository.delete(id);
 
         Driver byId = repository.getById(id);
