@@ -7,6 +7,7 @@ import pl.edu.pwr.models.enums.JobStatus;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 public class JobRepository extends DataStore implements RepositoryInterface<Job> {
     @Override
@@ -100,10 +101,14 @@ public class JobRepository extends DataStore implements RepositoryInterface<Job>
     }
 
     public Job getAssignedJob(int driverId) {
-        return jobList
-                .stream()
-                .filter(job -> job.getDriverId() == driverId)
-                .findFirst()
-                .get();
+        try {
+            return jobList
+                    .stream()
+                    .filter(job -> job.getDriverId() == driverId)
+                    .findFirst()
+                    .get();
+        } catch (NoSuchElementException e) {
+            return null;
+        }
     }
 }
