@@ -1,4 +1,4 @@
-package pl.edu.pwr.Repositories;
+package test.java.pl.edu.pwr.Repositories;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -9,14 +9,14 @@ import org.junit.jupiter.api.extension.TestExecutionExceptionHandler;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import pl.edu.pwr.models.Driver;
-
+import pl.edu.pwr.Repositories.DataStore;
 import java.util.NoSuchElementException;
 import java.util.Optional;
-
+import pl.edu.pwr.Repositories.
 import static org.junit.jupiter.api.Assertions.*;
 
 class DriverRepositoryTest implements TestExecutionExceptionHandler {
-    private static DriverRepository repository;
+    public static DriverRepository repository;
     private static String testDriverName;
     private static int testDriverId;
     private static boolean testDriverDuringExecutionOfOrder;

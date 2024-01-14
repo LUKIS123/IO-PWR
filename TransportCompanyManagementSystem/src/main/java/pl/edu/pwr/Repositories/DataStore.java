@@ -16,7 +16,7 @@ public class DataStore {
     public static int JOB_SEQUENCE = 1;
     public static int USER_SEQUENCE = 1;
     public static int HISTORY_ENTRY_SEQUENCE = 1;
-    protected static List<Job> jobList = new ArrayList<>(
+    public static List<Job> jobList = new ArrayList<>(
             List.of(new Job(JOB_SEQUENCE++, -1, 1, CargoType.HEAVY.toString(), JobStatus.PAID.toString(), 300, 1500, true),
                     new Job(JOB_SEQUENCE++, -1, 1, CargoType.HEAVY.toString(), JobStatus.NEWLY_ADDED.toString(), 300, 1500, false))
     );

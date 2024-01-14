@@ -152,9 +152,13 @@ public class JobController {
         try {
             assignedJob = jobRepository.getAssignedJob(driverId);
         } catch (Exception ignored) {
+            return null;
         }
 
-        Job.jobView.displayJobInfo(assignedJob);
+        if(assignedJob != null){  // dodałem check na not null ponieważ test failuje 100%
+            Job.jobView.displayJobInfo(assignedJob);
+        }
+
         return assignedJob;
     }
 
