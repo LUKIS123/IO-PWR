@@ -111,6 +111,12 @@ public class JobController {
         Job.jobView.displayJobInfo(job);
     }
 
+    public void createNewOrder(int clientId, CreateJobDto dto) {
+        Job job = new Job(clientId, "NEWLY_ADDED", dto.getCargoType().toString(), dto.getDistance(), dto.getWeight());
+        jobRepository.insert(job);
+        Job.jobView.displayJobInfo(job);
+    }
+
     public void makePayment(User user) {
         List<Job> byUserId = jobRepository.getByUserId(user.getId());
         int choice = Job.jobView.listAll(byUserId);
@@ -154,7 +160,9 @@ public class JobController {
         } catch (Exception ignored) {
         }
 
-        Job.jobView.displayJobInfo(assignedJob);
+        if(assignedJob != null){
+            Job.jobView.displayJobInfo(assignedJob);
+        }
         return assignedJob;
     }
 
