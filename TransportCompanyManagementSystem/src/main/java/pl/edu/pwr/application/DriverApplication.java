@@ -22,27 +22,49 @@ public class DriverApplication implements ApplicationInterface {
     @Override
     public void index() {
         int choice = applicationView.driverMenu();
-        int assignedJobId;
         switch (choice) {
             case 1:
-                assignedJob = jobController.listJobInRealization(user.getId());
+                getAssignedJob();
             case 2:
-                if (assignedJob == null) return;
-                assignedJobId = assignedJob.getJobId();
-                jobController.acceptJob(assignedJobId);
-                driverController.acceptJob(user.getId());
+                acceptJob();
             case 3:
-                if (assignedJob == null) return;
-                assignedJobId = assignedJob.getJobId();
-                jobController.setJobAsFinished(assignedJobId);
-                driverController.finishJob(user.getId());
+                finishJob();
             case 4:
-                driverController.setStatusDuringRest(user.getId());
+                goToRest();
             case 5:
-                driverController.setStatusOnShift(user.getId());
+                goToWork();
             default:
                 return;
         }
+    }
+
+    Job getAssignedJob() {
+        assignedJob = jobController.listJobInRealization(user.getId());
+        return assignedJob;
+    }
+
+    Job acceptJob() {
+        if (assignedJob == null) return null;
+        int assignedJobId = assignedJob.getJobId();
+        jobController.acceptJob(assignedJobId);
+        driverController.acceptJob(user.getId());
+        return jobController.listJobInRealization(assignedJobId);
+    }
+
+    Job finishJob() {
+        if (assignedJob == null) return null;
+        int assignedJobId = assignedJob.getJobId();
+        jobController.setJobAsFinished(assignedJobId);
+        driverController.finishJob(user.getId());
+        return jobController.listJobInRealization(assignedJobId);
+    }
+
+    void goToRest() {
+        driverController.setStatusDuringRest(user.getId());
+    }
+
+    void goToWork() {
+        driverController.setStatusOnShift(user.getId());
     }
 
 }
