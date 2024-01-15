@@ -1,9 +1,6 @@
 package pl.edu.pwr.controllers;
 
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import pl.edu.pwr.Repositories.JobRepository;
@@ -19,6 +16,7 @@ class JobControllerTest {
 
 
     @Nested
+    @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
     class SetJobStatusTest{
         private static JobRepository repository;
         private static Job testJob;
