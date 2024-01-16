@@ -1,4 +1,4 @@
-package pl.edu.pwr.controllers;
+package pl.edu.pwr.Repositories;
 
 import org.junit.jupiter.api.Tag;
 import org.junit.platform.suite.api.IncludeTags;
@@ -10,8 +10,7 @@ import org.junit.runner.RunWith;
 import org.junit.platform.runner.JUnitPlatform;
 
 @Suite
-@SelectClasses({JobControllerTest.class})
-// @IncludeTags({"create-new-order", "job-in-realization", "calculate-cost"})
-@IncludeTags("setting-job-status")
-public class JobControllerTestSuite {
+@SelectClasses({DriverRepositoryTest.class})
+@IncludeTags({"getting-drivers", "repository-action"})
+public class DriverRepositoryTestSuite {
 }
