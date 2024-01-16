@@ -82,9 +82,10 @@ class DriverApplicationTest {
         User user = new User(3,"test_user", UserType.CLIENT);
 
         //act
-        driverController.setStatusOnShift(user.getId());
-        Driver byId = driverRepository.getById(user.getId());
+        DriverApplication driverApplication = new DriverApplication(user,jobController,driverController);
+        driverApplication.goToWork();
 
+        Driver byId = driverRepository.getById(user.getId());
         //assert
         assertFalse(byId.isDuringRest());
     }
