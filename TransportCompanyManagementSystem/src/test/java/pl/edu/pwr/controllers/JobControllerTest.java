@@ -1,9 +1,6 @@
 package pl.edu.pwr.controllers;
 
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import pl.edu.pwr.Repositories.JobRepository;
@@ -19,6 +16,7 @@ class JobControllerTest {
 
 
     @Nested
+    @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
     class SetJobStatusTest{
         private static JobRepository repository;
         private static Job testJob;
@@ -75,6 +73,7 @@ class JobControllerTest {
             "FRAGILE, 200, 75",
             "HAZARDOUS, 80, 90"
     })
+    @Tag("create-new-order")
     void createNewOrder(String cargoType, int distance, int weight) {
         // Arrange
         CreateJobDto dto = new CreateJobDto();
@@ -100,6 +99,7 @@ class JobControllerTest {
             "2, NEWLY_ADDED, FRAGILE, 150, 75",
             "3, CANCELLED, REGULAR, 200, 300"
     })
+    @Tag("job-in-realization")
     void listJobInRealization(int driverId, String jobStatus, String cargoType, int distance, int weight) {
         // Arrange
         Job testJob = new Job(1, 1, 1, cargoType, jobStatus, distance, weight, false);
@@ -122,6 +122,7 @@ class JobControllerTest {
             "HAZARDOUS, 150, 200",
             "FRAGILE, 80, 50"
     })
+    @Tag("calculate-cost")
     void calculateCost(String cargoType, int distance, int weight) {
         // Arrange
         Job testJob = new Job(1, 1, 1, cargoType, "NEWLY_ADDED", distance, weight, false);
