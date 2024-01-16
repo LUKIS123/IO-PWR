@@ -2,6 +2,7 @@ package pl.edu.pwr.Repositories;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.extension.ExtensionContext;
@@ -62,6 +63,7 @@ class DriverRepositoryTest implements TestExecutionExceptionHandler {
 
     @Test
     @ExtendWith(DriverRepositoryTest.class)
+    @Tag("getting-drivers")
     void getById() {
         // Act
 
@@ -82,6 +84,7 @@ class DriverRepositoryTest implements TestExecutionExceptionHandler {
     }
 
     @Test
+    @Tag("repository-action")
     void insert() {
         // Arrange
         int id = DataStore.USER_SEQUENCE++;
@@ -110,6 +113,7 @@ class DriverRepositoryTest implements TestExecutionExceptionHandler {
     @ExtendWith(DriverRepositoryTest.class)
     @ParameterizedTest
     @ValueSource(ints = {10, -15, Integer.MAX_VALUE})
+    @Tag("repository-action")
     void delete(int id) {
         // Act
         repository.delete(id);
@@ -130,6 +134,7 @@ class DriverRepositoryTest implements TestExecutionExceptionHandler {
     }
 
     @Test
+    @Tag("getting-drivers")
     void getAvailableDrivers() {
         // isDuringExecution = false
         // isDuringRest = false

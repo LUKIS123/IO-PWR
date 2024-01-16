@@ -28,6 +28,7 @@ class JobControllerTest {
         }
 
         @Test
+        @Tag("setting-job-status")
         @Order(1)
         void setJobAsPaid() {
             // Act
@@ -37,6 +38,7 @@ class JobControllerTest {
         }
 
         @Test
+        @Tag("setting-job-status")
         @Order(2)
         void setJobAsCancelled() {
             // Act
@@ -46,6 +48,7 @@ class JobControllerTest {
         }
 
         @Test
+        @Tag("setting-job-status")
         @Order(3)
         void setJobAsVerified() {
             // Act
@@ -55,6 +58,7 @@ class JobControllerTest {
         }
 
         @Test
+        @Tag("setting-job-status")
         @Order(4)
         void setJobAsRejected() {
             // Act
