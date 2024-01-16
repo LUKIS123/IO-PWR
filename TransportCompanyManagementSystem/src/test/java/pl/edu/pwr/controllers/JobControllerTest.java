@@ -19,11 +19,12 @@ class JobControllerTest {
 
 
     @Nested
-    class SetJobStatusTest{
+    class SetJobStatusTest {
         private static JobRepository repository;
         private static Job testJob;
+
         @BeforeAll
-        static void initializeJob(){
+        static void initializeJob() {
             repository = new JobRepository();
             testJob = new Job(1, 1, 1, "HEAVY", "NEWLY_ADDED", 100, 100, false);
             repository.getAll().add(testJob);

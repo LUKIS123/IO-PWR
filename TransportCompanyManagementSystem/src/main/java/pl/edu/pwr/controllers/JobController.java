@@ -10,6 +10,7 @@ import pl.edu.pwr.models.JobHistoryEntry;
 import pl.edu.pwr.models.User;
 import pl.edu.pwr.models.enums.CargoType;
 import pl.edu.pwr.models.enums.JobStatus;
+import pl.edu.pwr.views.job.JobView;
 
 import java.util.List;
 import java.util.Optional;
@@ -18,6 +19,11 @@ public class JobController {
     private final JobRepository jobRepository;
     private final JobHistoryRepository jobHistoryRepository;
 
+    public JobController(JobRepository jobRepository, JobHistoryRepository jobHistoryRepository) {
+        this.jobRepository = jobRepository;
+        this.jobHistoryRepository = jobHistoryRepository;
+    }
+
     public JobController() {
         jobRepository = new JobRepository();
         jobHistoryRepository = new JobHistoryRepository();
@@ -25,19 +31,12 @@ public class JobController {
 
     public int listAllJobs() {
         List<Job> all = jobRepository.getAll();
-        int i = Job.jobView.listAll(all);
+        int i = JobView.listAll(all);
         return i;
     }
 
-    public Job listJobByStatus(JobStatus status) {
-        List<Job> byStatus = jobRepository.getByStatus(status);
-        byStatus.forEach(job -> job.setStatus(JobStatus.IN_VERIFICATION_PROCESS));
-        int i = Job.jobView.listAll(byStatus);
-        return byStatus
-                .stream()
-                .filter(x -> x.getJobId() == i)
-                .findFirst()
-                .get();
+    public List<Job> listJobByStatus(JobStatus status) {
+        return jobRepository.getByStatus(status);
     }
 
     public int listJobsByOwner(int userId) {
@@ -52,6 +51,12 @@ public class JobController {
 
     public JobDriverAssignmentDto acceptForConsideration() {
         List<JobDriverAssignmentDto> list = jobRepository.getByStatusWithDriverSuggestion();
+
+        if (list.isEmpty()) {
+            System.out.println("Brak zlecen... Przyjmij nowe zlecenia...");
+            return null;
+        }
+
         int chosenJobId = Job.jobView.listOrdersWithDriverAssigment(list);
 
         JobDriverAssignmentDto dto = null;
@@ -105,7 +110,7 @@ public class JobController {
 
     // todo
     public void createNewOrder(int clientId) {
-        CreateJobDto dto = Job.jobView.order();
+        CreateJobDto dto = JobView.order();
         Job job = new Job(clientId, "NEWLY_ADDED", dto.cargoType.toString(), dto.distance, dto.weight);
         jobRepository.insert(job);
         Job.jobView.displayJobInfo(job);
@@ -119,19 +124,25 @@ public class JobController {
 
     public void makePayment(User user) {
         List<Job> byUserId = jobRepository.getByUserId(user.getId());
-        int choice = Job.jobView.listAll(byUserId);
+        int choice = JobView.listAll(byUserId);
 
         Job chosenJob = null;
         for (Job job : byUserId) {
             int jobId = job.getJobId();
             if (jobId == choice) {
                 chosenJob = job;
+                break;
             }
+        }
+
+        if (chosenJob == null) {
+            System.out.println("Nie ma takiego zlecenia");
+            return;
         }
 
         calculateCost(chosenJob);
 
-        boolean paymentConfirmed = Job.jobView.tryMakePayment(chosenJob);
+        boolean paymentConfirmed = JobView.tryMakePayment(chosenJob);
         int chosenJobJobId = chosenJob.getJobId();
         if (paymentConfirmed) {
             setJobAsPaid(chosenJobJobId);
@@ -160,7 +171,7 @@ public class JobController {
         } catch (Exception ignored) {
         }
 
-        if(assignedJob != null){
+        if (assignedJob != null) {
             Job.jobView.displayJobInfo(assignedJob);
         }
         return assignedJob;
@@ -191,4 +202,11 @@ public class JobController {
         job.setCost((int) (1.2 * distance + cargoTypeAddedCost + 0.8 * weight));
     }
 
+    public JobRepository getJobRepository() {
+        return jobRepository;
+    }
+
+    public JobHistoryRepository getJobHistoryRepository() {
+        return jobHistoryRepository;
+    }
 }

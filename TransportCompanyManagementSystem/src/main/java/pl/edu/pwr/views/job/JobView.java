@@ -4,6 +4,7 @@ import pl.edu.pwr.dtos.CreateJobDto;
 import pl.edu.pwr.dtos.JobDriverAssignmentDto;
 import pl.edu.pwr.models.Driver;
 import pl.edu.pwr.models.Job;
+import pl.edu.pwr.models.enums.CargoType;
 
 import java.util.List;
 import java.util.Optional;
@@ -11,7 +12,7 @@ import java.util.Scanner;
 
 public class JobView {
 
-    public boolean tryMakePayment(Job job) {
+    public static boolean tryMakePayment(Job job) {
         System.out.println("Koszt: " + job.getCost());
         System.out.println("Tak kliknij-> 1, Nie -> dowolny inny");
         Scanner scanner = new Scanner(System.in);
@@ -19,14 +20,18 @@ public class JobView {
         return scanner.nextInt() == 1;
     }
 
-    public int listAll(List<Job> jobs) {
+    public void listAllNoAction(List<Job> jobs) {
+        jobs.forEach(System.out::println);
+    }
+
+    public static int listAll(List<Job> jobs) {
         jobs.forEach(System.out::println);
         System.out.print("Wpisz ID: ");
         Scanner scanner = new Scanner(System.in);
         return scanner.nextInt();
     }
 
-    public int verifyView(Job job, Driver driver) {
+    public static int verifyView(Job job, Driver driver) {
         String info = "Job:\n" + job.toString() + "\nAssigned Driver:\n" + driver.toString();
         System.out.println(info);
 
@@ -34,9 +39,7 @@ public class JobView {
         System.out.println("0 - OK,\n1 - Zmien kierowce,\n2 - Odrzuc zlecenie");
 
         Scanner scanner = new Scanner(System.in);
-        int decision = scanner.nextInt();
-
-        return decision;
+        return scanner.nextInt();
     }
 
     public void displayJobInfo(Job job) {
@@ -46,8 +49,12 @@ public class JobView {
     public void displayDriverJobInfo(Driver driver, Job job) {
     }
 
-    public CreateJobDto order() {
-        return null;
+    public static CreateJobDto order() {
+        return new CreateJobDto(
+                CargoType.HEAVY,
+                100,
+                100
+        );
     }
 
     public Optional<Integer> listOrders(List<Job> byUserId) {

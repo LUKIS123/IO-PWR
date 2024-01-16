@@ -8,6 +8,9 @@ import pl.edu.pwr.models.Job;
 import pl.edu.pwr.models.User;
 import pl.edu.pwr.models.enums.JobStatus;
 import pl.edu.pwr.views.application.ApplicationView;
+import pl.edu.pwr.views.job.JobView;
+
+import java.util.List;
 
 public class AdministratorApplication implements ApplicationInterface {
     private final ApplicationView applicationView = new ApplicationView();
@@ -28,7 +31,7 @@ public class AdministratorApplication implements ApplicationInterface {
             choice = applicationView.adminMenu();
             switch (choice) {
                 case 1:
-                    jobController.listJobByStatus(JobStatus.PAID);
+                    checkoutJobsToVerify();
                     break;
                 case 2:
                     verifyJobs();
@@ -45,9 +48,19 @@ public class AdministratorApplication implements ApplicationInterface {
         }
     }
 
-    private void verifyJobs() {
+    List<Job> checkoutJobsToVerify() {
+        List<Job> jobs = jobController.listJobByStatus(JobStatus.PAID);
+        jobs.forEach(job -> job.setStatus(JobStatus.IN_VERIFICATION_PROCESS));
+        Job.jobView.listAllNoAction(jobs);
+        return jobs;
+    }
+
+    void verifyJobs() {
         JobDriverAssignmentDto jobDriverAssignmentDto = jobController.acceptForConsideration();
-        int decision = Job.jobView.verifyView(jobDriverAssignmentDto.job, jobDriverAssignmentDto.driver);
+        if (jobDriverAssignmentDto == null) {
+            return;
+        }
+        int decision = JobView.verifyView(jobDriverAssignmentDto.job, jobDriverAssignmentDto.driver);
 
         int jobId = jobDriverAssignmentDto.job.getJobId();
         if (decision == 0) {

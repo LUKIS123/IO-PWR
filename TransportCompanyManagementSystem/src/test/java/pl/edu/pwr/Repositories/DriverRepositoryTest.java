@@ -8,6 +8,7 @@ import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.api.extension.TestExecutionExceptionHandler;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
+import org.junit.platform.suite.api.Suite;
 import pl.edu.pwr.models.Driver;
 
 import java.util.NoSuchElementException;
@@ -15,7 +16,7 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class DriverRepositoryTest implements TestExecutionExceptionHandler {
+public class DriverRepositoryTest implements TestExecutionExceptionHandler {
     private static DriverRepository repository;
     private static String testDriverName;
     private static int testDriverId;

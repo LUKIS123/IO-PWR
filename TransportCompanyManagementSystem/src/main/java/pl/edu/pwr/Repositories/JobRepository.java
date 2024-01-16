@@ -61,7 +61,7 @@ public class JobRepository extends DataStore implements RepositoryInterface<Job>
     }
 
     public List<JobDriverAssignmentDto> getByStatusWithDriverSuggestion() {
-        List<Job> byStatus = getByStatus(JobStatus.PAID);
+        List<Job> byStatus = getByStatus(JobStatus.IN_VERIFICATION_PROCESS);
 
         List<Driver> availableDrivers = new ArrayList<>();
         for (Driver driver : driverList) {

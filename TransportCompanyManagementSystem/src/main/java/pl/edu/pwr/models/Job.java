@@ -130,7 +130,10 @@ public class Job {
     }
 
     public void setStatus(JobStatus status) {
-        this.isPaid = true;
+        if (status == JobStatus.PAID) {
+            this.isPaid = true;
+        }
+
         this.status = status;
     }
 
@@ -149,15 +152,15 @@ public class Job {
     @Override
     public String toString() {
         return "Job{" +
-                "jobId=" + jobId +
-                ", driverId=" + driverId +
-                ", clientId=" + clientId +
-                ", cargoType=" + cargoType +
-                ", status=" + status +
-                ", cost=" + cost +
-                ", distance=" + distance +
-                ", weight=" + weight +
-                ", isPaid=" + isPaid +
-                '}';
+               "jobId=" + jobId +
+               ", driverId=" + driverId +
+               ", clientId=" + clientId +
+               ", cargoType=" + cargoType +
+               ", status=" + status +
+               ", cost=" + cost +
+               ", distance=" + distance +
+               ", weight=" + weight +
+               ", isPaid=" + isPaid +
+               '}';
     }
 }

@@ -7,6 +7,15 @@ public class CreateJobDto {
     public int distance;
     public int weight;
 
+    public CreateJobDto(CargoType cargoType, int distance, int weight) {
+        this.cargoType = cargoType;
+        this.distance = distance;
+        this.weight = weight;
+    }
+
+    public CreateJobDto() {
+    }
+
     public void setCargoType(CargoType cargoType) {
         this.cargoType = cargoType;
     }
