@@ -99,7 +99,7 @@ public class JobController {
     public void setJobAsRejected(int jobId) {
         Job byId = jobRepository.getById(jobId);
         byId.setStatus(JobStatus.REJECTED);
-        jobHistoryRepository.insert(new JobHistoryEntry(jobId, JobStatus.IN_VERIFICATION_PROCESS, JobStatus.CANCELLED));
+        jobHistoryRepository.insert(new JobHistoryEntry(jobId, JobStatus.IN_VERIFICATION_PROCESS, JobStatus.REJECTED));
         Job.jobView.displayJobInfo(byId);
     }
 
