@@ -51,6 +51,12 @@ class JobControllerTest {
             jobController.setJobAsCancelled(testJob.getJobId());
             // Assert
             assertEquals(JobStatus.CANCELLED, testJob.getStatus());
+
+            JobHistoryEntry byJobIdLatest = jobController
+                    .getJobHistoryRepository()
+                    .getByJobIdLatest(testJob.getJobId());
+            assertEquals(JobStatus.NEWLY_ADDED, byJobIdLatest.getOldStatus());
+            assertEquals(JobStatus.CANCELLED, byJobIdLatest.getNewStatus());
         }
 
         @Test
@@ -61,6 +67,12 @@ class JobControllerTest {
             jobController.setJobAsVerified(testJob.getJobId());
             // Assert
             assertEquals(JobStatus.VERIFIED, testJob.getStatus());
+
+            JobHistoryEntry byJobIdLatest = jobController
+                    .getJobHistoryRepository()
+                    .getByJobIdLatest(testJob.getJobId());
+            assertEquals(JobStatus.IN_VERIFICATION_PROCESS, byJobIdLatest.getOldStatus());
+            assertEquals(JobStatus.VERIFIED, byJobIdLatest.getNewStatus());
         }
 
         @Test
@@ -71,6 +83,12 @@ class JobControllerTest {
             jobController.setJobAsRejected(testJob.getJobId());
             // Assert
             assertEquals(JobStatus.REJECTED, testJob.getStatus());
+
+            JobHistoryEntry byJobIdLatest = jobController
+                    .getJobHistoryRepository()
+                    .getByJobIdLatest(testJob.getJobId());
+            assertEquals(JobStatus.IN_VERIFICATION_PROCESS, byJobIdLatest.getOldStatus());
+            assertEquals(JobStatus.REJECTED, byJobIdLatest.getNewStatus());
         }
     }
 
