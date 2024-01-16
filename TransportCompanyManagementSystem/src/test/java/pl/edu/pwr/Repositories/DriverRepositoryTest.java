@@ -12,6 +12,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 import org.junit.platform.suite.api.Suite;
 import pl.edu.pwr.models.Driver;
 
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
@@ -20,6 +21,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class DriverRepositoryTest implements TestExecutionExceptionHandler {
     private static DriverRepository repository;
     private static String testDriverName;
+    private static int initialDriverListSize;
     private static int testDriverId;
     private static boolean testDriverDuringExecutionOfOrder;
     private static boolean testDriverDuringRest;
@@ -40,6 +42,8 @@ public class DriverRepositoryTest implements TestExecutionExceptionHandler {
         repository.getAll().add(driver3);
         repository.getAll().add(driver4);
         repository.getAll().add(driver5);
+
+        initialDriverListSize = repository.getAll().size();
     }
 
     // Wykonuje sie przed kazdym poszczegolnym testem
@@ -137,8 +141,18 @@ public class DriverRepositoryTest implements TestExecutionExceptionHandler {
     @Test
     @Tag("getting-drivers")
     void getAvailableDrivers() {
-        // isDuringExecution = false
-        // isDuringRest = false
+        // Act
+        List<Driver> availableDrivers = repository.getAvailableDrivers();
+
+        // Assert
+        assertNotNull(availableDrivers);
+        assertFalse(availableDrivers.isEmpty());
+        assertEquals(initialDriverListSize, availableDrivers.size());
+
+        for (Driver availableDriver : availableDrivers) {
+            assertFalse(availableDriver.isDuringExecutionOfOrder());
+            assertFalse(availableDriver.isDuringRest());
+        }
     }
 
 }
