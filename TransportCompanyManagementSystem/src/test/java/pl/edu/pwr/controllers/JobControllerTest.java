@@ -6,25 +6,25 @@ import org.junit.jupiter.params.provider.CsvSource;
 import pl.edu.pwr.Repositories.JobRepository;
 import pl.edu.pwr.dtos.CreateJobDto;
 import pl.edu.pwr.models.Job;
+import pl.edu.pwr.models.JobHistoryEntry;
 import pl.edu.pwr.models.enums.CargoType;
 import pl.edu.pwr.models.enums.JobStatus;
-import pl.edu.pwr.views.job.JobView;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 class JobControllerTest {
-
-
     @Nested
     @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-    class SetJobStatusTest{
-        private static JobRepository repository;
+    class SetJobStatusTest {
+        private static JobController jobController;
         private static Job testJob;
+
         @BeforeAll
-        static void initializeJob(){
-            repository = new JobRepository();
-            testJob = new Job(1, 1, 1, "HEAVY", "NEWLY_ADDED", 100, 100, false);
-            repository.getAll().add(testJob);
+        static void initializeJob() {
+            jobController = new JobController();
+            testJob = new Job(123, 1, 1, "HEAVY", "NEWLY_ADDED", 100, 100, false);
+            jobController.getJobRepository().insert(testJob);
         }
 
         @Test
@@ -32,9 +32,15 @@ class JobControllerTest {
         @Order(1)
         void setJobAsPaid() {
             // Act
-            testJob.setStatus(JobStatus.PAID);
+            jobController.setJobAsPaid(testJob.getJobId());
             // Assert
             assertEquals(JobStatus.PAID, testJob.getStatus());
+
+            JobHistoryEntry byJobIdLatest = jobController
+                    .getJobHistoryRepository()
+                    .getByJobIdLatest(testJob.getJobId());
+            assertEquals(JobStatus.NEWLY_ADDED, byJobIdLatest.getOldStatus());
+            assertEquals(JobStatus.PAID, byJobIdLatest.getNewStatus());
         }
 
         @Test
@@ -42,7 +48,7 @@ class JobControllerTest {
         @Order(2)
         void setJobAsCancelled() {
             // Act
-            testJob.setStatus(JobStatus.CANCELLED);
+            jobController.setJobAsCancelled(testJob.getJobId());
             // Assert
             assertEquals(JobStatus.CANCELLED, testJob.getStatus());
         }
@@ -52,7 +58,7 @@ class JobControllerTest {
         @Order(3)
         void setJobAsVerified() {
             // Act
-            testJob.setStatus(JobStatus.VERIFIED);
+            jobController.setJobAsVerified(testJob.getJobId());
             // Assert
             assertEquals(JobStatus.VERIFIED, testJob.getStatus());
         }
@@ -62,7 +68,7 @@ class JobControllerTest {
         @Order(4)
         void setJobAsRejected() {
             // Act
-            testJob.setStatus(JobStatus.REJECTED);
+            jobController.setJobAsRejected(testJob.getJobId());
             // Assert
             assertEquals(JobStatus.REJECTED, testJob.getStatus());
         }
