@@ -9,6 +9,10 @@ import java.util.NoSuchElementException;
 public class DriverController {
     private final DriverRepository driverRepository;
 
+    public DriverController(DriverRepository driverRepository) {
+        this.driverRepository = driverRepository;
+    }
+
     public DriverController() {
         driverRepository = new DriverRepository();
     }
@@ -25,13 +29,16 @@ public class DriverController {
         Driver.driverView.makeAction(byId);
     }
 
-    public void acceptJob(int id) {
+    public boolean acceptJob(int id) {
         try {
             Driver byId = driverRepository.getById(id);
             byId.setDuringExecutionOfOrder(true);
             Driver.driverView.makeAction(byId);
+            return true;
+
         } catch (NoSuchElementException e) {
             System.out.println("Nie ma takiego kierowcy");
+            return false;
         }
     }
 
