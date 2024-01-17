@@ -4,6 +4,7 @@ import pl.edu.pwr.Repositories.DriverRepository;
 import pl.edu.pwr.models.Driver;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 public class DriverController {
     private final DriverRepository driverRepository;
@@ -25,9 +26,13 @@ public class DriverController {
     }
 
     public void acceptJob(int id) {
-        Driver byId = driverRepository.getById(id);
-        byId.setDuringExecutionOfOrder(true);
-        Driver.driverView.makeAction(byId);
+        try {
+            Driver byId = driverRepository.getById(id);
+            byId.setDuringExecutionOfOrder(true);
+            Driver.driverView.makeAction(byId);
+        } catch (NoSuchElementException e) {
+            System.out.println("Nie ma takiego kierowcy");
+        }
     }
 
     public void finishJob(int id) {
@@ -55,4 +60,7 @@ public class DriverController {
         Driver.driverView.displayDriverInfo(byId);
     }
 
+    public DriverRepository getDriverRepository() {
+        return driverRepository;
+    }
 }

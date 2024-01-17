@@ -51,9 +51,9 @@ public class JobView {
 
     public static CreateJobDto order() {
         return new CreateJobDto(
-                CargoType.HEAVY,
-                100,
-                100
+                CargoType.NONE,
+                0,
+                0
         );
     }
 

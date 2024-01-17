@@ -9,7 +9,6 @@ import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.api.extension.TestExecutionExceptionHandler;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
-import org.junit.platform.suite.api.Suite;
 import pl.edu.pwr.models.Driver;
 
 import java.util.List;
@@ -19,12 +18,12 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class DriverRepositoryTest implements TestExecutionExceptionHandler {
-    private static DriverRepository repository;
-    private static String testDriverName;
-    private static int initialDriverListSize;
-    private static int testDriverId;
-    private static boolean testDriverDuringExecutionOfOrder;
-    private static boolean testDriverDuringRest;
+    static DriverRepository repository;
+    static String testDriverName;
+    static int initialDriverListSize;
+    static int testDriverId;
+    static boolean testDriverDuringExecutionOfOrder;
+    static boolean testDriverDuringRest;
 
     // Wykonuje sie przed wykonaniem testow
     @BeforeAll

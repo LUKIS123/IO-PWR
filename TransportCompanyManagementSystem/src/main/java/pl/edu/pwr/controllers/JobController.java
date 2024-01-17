@@ -156,14 +156,15 @@ public class JobController {
     public void setJobAsFinished(int jobId) {
         Job byId = jobRepository.getById(jobId);
         Job.jobView.displayJobInfo(byId);
+        byId.setStatus(JobStatus.FINISHED);
     }
 
     public void acceptJob(int jobId) {
         Job byId = jobRepository.getById(jobId);
         Job.jobView.displayJobInfo(byId);
+        byId.setStatus(JobStatus.IN_PROGRESS);
     }
 
-    // todo
     public Job listJobInRealization(int driverId) {
         Job assignedJob = null;
         try {
@@ -177,7 +178,6 @@ public class JobController {
         return assignedJob;
     }
 
-    // todo
     public void calculateCost(Job job) {
         int weight = job.getWeight();
         int distance = job.getDistance();
