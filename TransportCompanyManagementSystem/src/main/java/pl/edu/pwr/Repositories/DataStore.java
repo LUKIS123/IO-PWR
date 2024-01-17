@@ -21,7 +21,7 @@ public class DataStore {
                     new Job(JOB_SEQUENCE++, -1, 1, CargoType.HEAVY.toString(), JobStatus.NEWLY_ADDED.toString(), 300, 1500, false))
     );
     // todo: uwaga aby ID zgadzały sie z userList
-    protected static List<Driver> driverList = new ArrayList<>(List.of(
+    public static List<Driver> driverList = new ArrayList<>(List.of(
             new Driver(3, "Adam"),
             new Driver(4, "Anton")
     ));

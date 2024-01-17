@@ -2,6 +2,9 @@ package pl.edu.pwr.application;
 
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.extension.ExtensionContext;
+import org.junit.jupiter.api.extension.TestExecutionExceptionHandler;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import pl.edu.pwr.Repositories.DriverRepository;
@@ -32,9 +35,11 @@ import static org.junit.jupiter.api.Assertions.assertTimeout;
 import static org.junit.jupiter.api.Assertions.assertTimeoutPreemptively;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.*;
+import static pl.edu.pwr.Repositories.DataStore.driverList;
 import static pl.edu.pwr.Repositories.DataStore.jobList;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+@ExtendWith(ExceptionHandlerExtension.class)
 class DriverApplicationTest {
 
 
@@ -54,7 +59,7 @@ class DriverApplicationTest {
         driverApplication = new DriverApplication(user,jobController,driverController);
     }
 
-
+    @Order(1)
     @RepeatedTest(5)
     void getAssignedJob() {
         // Arrange
@@ -71,6 +76,7 @@ class DriverApplicationTest {
         assertNotNull(to_check);
     }
 
+    @Order(2)
     @Test
     void acceptJob() {
         // nie ma takiego elementu więc powinien wyrzucić NoSuchElementException exception
@@ -107,15 +113,17 @@ class DriverApplicationTest {
     }
 
 
-    // przeleci po kolei z tymi parametrami
+    // przeleci po kolei z tymi parametrami z CSV
     @ParameterizedTest
     @CsvSource({  // id driver do testu
             "3",
             "4",
     })
-    void goToRest(String driverId) {
-        driverController.setStatusDuringRest(Integer.parseInt(driverId));
-        assertTrue(driverRepository.getById(Integer.parseInt(driverId)).isDuringRest());
+    void goToRest(String ID) {
+        User u = new User(Integer.parseInt(ID),"AAAA",UserType.CLIENT);
+        DriverApplication d = new DriverApplication(u,jobController,driverController);
+        d.goToRest();
+        assertTrue(driverRepository.getById(Integer.parseInt(ID)).isDuringRest());
     }
 
     static Stream<Integer> driverIdstream() {
@@ -136,7 +144,7 @@ class DriverApplicationTest {
 
     @Test
     @AfterAll
-    @Disabled
+    @Disabled   // nie używane
     static void reset(){
         // usunięcie po testach utworzonych obiektów
         jobList.subList(2, 6).clear();
@@ -146,6 +154,10 @@ class DriverApplicationTest {
     @BeforeAll
     static void check(){
         // sprawdzenie czy lista nie jest pusta
-        assertFalse(jobList.isEmpty());
+        assertFalse(driverList.isEmpty());
     }
+
+
+
 }
+
