@@ -5,7 +5,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
-import pl.edu.pwr.Repositories.JobHistoryRepository;
 import pl.edu.pwr.Repositories.JobRepository;
 import pl.edu.pwr.controllers.JobController;
 import pl.edu.pwr.dtos.CreateJobDto;
@@ -22,35 +21,34 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 class ClientApplicationTest {
+    List<Job> mockJobsList;
     @Mocked
     User user;
-    @Injectable
+    @Mocked
     JobRepository jobRepository;
     @Tested
     JobController jobController;
 
-    List<Job> mockJobsList;
-
     @BeforeEach
     void setUp() {
+        mockJobsList = new ArrayList<>(Arrays.asList(
+                new Job(1, 0, 111, "HEAVY", "NEWLY_ADDED", 100, 100, false),
+                new Job(2, 0, 111, "HEAVY", "NEWLY_ADDED", 200, 200, false)
+        ));
         new Expectations() {{
             user.getId();
-            result = 1111;
-            minTimes = 1;
+            result = 111;
+            minTimes = 0;
 
             jobRepository.getAll();
             result = mockJobsList;
             minTimes = 0;
         }};
-
-        mockJobsList = new ArrayList<>(Arrays.asList(
-                new Job(1, 0, user.getId(), "HEAVY", "NEWLY_ADDED", 100, 100, false),
-                new Job(2, 0, user.getId(), "HEAVY", "NEWLY_ADDED", 200, 200, false)
-        ));
     }
 
     @Test
     void createNewJob() {
+        // Arrange
         int index = mockJobsList.size() - 1;
         new Expectations() {{
             new MockUp<JobView>() {
@@ -62,33 +60,45 @@ class ClientApplicationTest {
                             50);
                 }
             };
-            new MockUp<JobRepository>() {
-                @Mock
+
+            jobRepository.insert((Job) any);
+            result = new Delegate() {
                 void insert(Job job) {
                     mockJobsList.add(job);
                 }
             };
+            minTimes = 1;
+
         }};
 
+        // Act
         jobController.createNewOrder(user.getId());
 
-
+        // Assert
+        assertEquals(user.getId(), mockJobsList.get(index + 1).getClientId());
         assertEquals(JobStatus.NEWLY_ADDED, mockJobsList.get(index + 1).getStatus());
         assertEquals(CargoType.HAZARDOUS, mockJobsList.get(index + 1).getCargoType());
         assertEquals(200, mockJobsList.get(index + 1).getDistance());
         assertEquals(50, mockJobsList.get(index + 1).getWeight());
+
+        new Verifications() {{
+            jobRepository.insert((Job) any);
+            times = 1;
+        }};
     }
 
     @ParameterizedTest
     @ValueSource(booleans = {true, false})
     void makePayment(boolean paymentAccepted) {
+        // Arrange
         new Expectations() {{
-            new MockUp<JobRepository>() {
-                @Mock
+            jobRepository.getByUserId(anyInt);
+            result = new Delegate() {
                 List<Job> getByUserId(int id) {
                     return mockJobsList;
                 }
             };
+            minTimes = 1;
             new MockUp<JobView>() {
                 @Mock
                 int listAll(List<Job> jobs) {
@@ -97,21 +107,23 @@ class ClientApplicationTest {
             };
             new MockUp<JobView>() {
                 @Mock
-                boolean tryMakePayment(Job jobs) {
+                boolean tryMakePayment(Job job) {
                     return paymentAccepted;
                 }
             };
-            new MockUp<JobRepository>() {
-                @Mock
+            jobRepository.getById(anyInt);
+            result = new Delegate() {
                 Job getById(int jobId) {
                     return mockJobsList.get(0);
                 }
             };
+            minTimes = 1;
         }};
 
+        // Act
         jobController.makePayment(user);
 
-
+        // Assert
         if (paymentAccepted) {
             assertEquals(JobStatus.PAID, mockJobsList.get(0).getStatus());
             assertTrue(mockJobsList.get(0).isPaid());
@@ -122,6 +134,14 @@ class ClientApplicationTest {
         assertEquals(user.getId(), mockJobsList.get(0).getClientId());
         assertEquals(100, mockJobsList.get(0).getDistance());
         assertEquals(100, mockJobsList.get(0).getWeight());
+
+        new Verifications() {{
+            jobRepository.getByUserId(anyInt);
+            times = 1;
+
+            jobRepository.getById(anyInt);
+            times = 1;
+        }};
     }
 
 }

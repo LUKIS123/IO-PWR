@@ -63,6 +63,7 @@ public class AdministratorApplication implements ApplicationInterface {
         int decision = JobView.verifyView(jobDriverAssignmentDto.job, jobDriverAssignmentDto.driver);
 
         int jobId = jobDriverAssignmentDto.job.getJobId();
+
         if (decision == 0) {
             jobController.setJobAsVerified(jobId);
         } else if (decision == 1) {
@@ -76,4 +77,7 @@ public class AdministratorApplication implements ApplicationInterface {
         }
     }
 
+    public int getUserId() {
+        return user.getId();
+    }
 }

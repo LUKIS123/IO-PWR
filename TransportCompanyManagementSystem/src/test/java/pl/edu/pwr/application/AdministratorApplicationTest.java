@@ -11,7 +11,6 @@ import pl.edu.pwr.models.Driver;
 import pl.edu.pwr.models.Job;
 import pl.edu.pwr.models.User;
 import pl.edu.pwr.models.enums.JobStatus;
-import pl.edu.pwr.models.enums.UserType;
 import pl.edu.pwr.views.job.JobView;
 
 import java.util.List;
@@ -34,14 +33,11 @@ class AdministratorApplicationTest {
 
     @Test
     void checkoutJobsToVerify() {
+        // Arrange
         new Expectations() {{
             user.getId();
             result = 1111;
-            minTimes = 0;
-
-            user.getUserType();
-            result = UserType.ADMINISTRATOR;
-            minTimes = 0;
+            minTimes = 1;
 
             jobController.listJobByStatus(JobStatus.PAID);
             result = List.of(
@@ -52,7 +48,11 @@ class AdministratorApplicationTest {
             minTimes = 0;
         }};
 
+        // Act
         List<Job> checkedOutJobsToVerify = administratorApplication.checkoutJobsToVerify();
+
+        // Assert
+        assertEquals(administratorApplication.getUserId(), user.getId());
 
         assertEquals(checkedOutJobsToVerify.get(0).getStatus(), JobStatus.IN_VERIFICATION_PROCESS);
         assertEquals(checkedOutJobsToVerify.get(1).getStatus(), JobStatus.IN_VERIFICATION_PROCESS);
@@ -67,13 +67,12 @@ class AdministratorApplicationTest {
     @ParameterizedTest
     @ValueSource(ints = {0, 1, 2})
     void verifyJobs(int option) {
-
         Driver driverTest2 = new Driver(1, "Antoni");
-        Job jobTest2 = new Job(1, "IN_VERIFICATION_PROCESS", "HEAVY", 100, 100);
+        Job jobTest2 = new Job(1, 0, 1, "HEAVY", "IN_VERIFICATION_PROCESS", 100, 100, true);
         new Expectations() {{
             jobController.acceptForConsideration();
             result = new JobDriverAssignmentDto(driverTest2, jobTest2);
-            minTimes = 0;
+            minTimes = 1;
 
             new MockUp<JobView>() {
                 @Mock
@@ -82,26 +81,33 @@ class AdministratorApplicationTest {
                 }
             };
 
-            new MockUp<JobController>() {
-                @Mock
+            jobController.setJobAsVerified(anyInt);
+            result = new Delegate() {
                 void setJobAsVerified(int jobId) {
-                    jobTest2.setStatus(JobStatus.VERIFIED);
+                    if (jobId == jobTest2.getJobId()) {
+                        jobTest2.setStatus(JobStatus.VERIFIED);
+                    }
                 }
             };
+            minTimes = 0;
 
-            new MockUp<JobController>() {
-                @Mock
+            jobController.assignDriverToJob((Driver) any, (Job) any);
+            result = new Delegate() {
                 void assignDriverToJob(Driver driver, Job job) {
                     jobTest2.setDriverId(driverTest2.getId());
                 }
             };
+            minTimes = 0;
 
-            new MockUp<JobController>() {
-                @Mock
+            jobController.setJobAsRejected(anyInt);
+            result = new Delegate() {
                 void setJobAsRejected(int jobId) {
-                    jobTest2.setStatus(JobStatus.REJECTED);
+                    if (jobId == jobTest2.getJobId()) {
+                        jobTest2.setStatus(JobStatus.REJECTED);
+                    }
                 }
             };
+            minTimes = 0;
 
             driverController.listAvailableDrivers();
             result = new Driver(0, "Adam");
@@ -112,6 +118,7 @@ class AdministratorApplicationTest {
 
         if (option == 0) {
             // Akceptacja zlecenia
+            assertEquals(0, jobTest2.getDriverId());
             assertEquals(JobStatus.VERIFIED, jobTest2.getStatus());
         } else if (option == 1) {
             // Przypisanie kierowcy
@@ -119,6 +126,7 @@ class AdministratorApplicationTest {
             assertEquals(driverTest2.getId(), jobTest2.getDriverId());
         } else {
             // Odrzucenie zlecenia
+            assertEquals(0, jobTest2.getDriverId());
             assertEquals(JobStatus.REJECTED, jobTest2.getStatus());
         }
     }
