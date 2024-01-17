@@ -15,7 +15,12 @@ import pl.edu.pwr.models.enums.JobStatus;
 import pl.edu.pwr.models.enums.UserType;
 
 import java.util.NoSuchElementException;
+import java.util.stream.Stream;
 
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.junit.jupiter.api.Assumptions.assumeFalse;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
@@ -104,14 +109,30 @@ class DriverApplicationTest {
 
     // przeleci po kolei z tymi parametrami
     @ParameterizedTest
-    @CsvSource({
-            "3",  // User ID = 3
-            "4",  // User ID = 4
+    @CsvSource({  // id driver do testu
+            "3",
+            "4",
     })
     void goToRest(String driverId) {
         driverController.setStatusDuringRest(Integer.parseInt(driverId));
-        assertEquals(true,driverRepository.getById(Integer.parseInt(driverId)).isDuringRest());
+        assertTrue(driverRepository.getById(Integer.parseInt(driverId)).isDuringRest());
     }
+
+    static Stream<Integer> driverIdstream() {
+        return Stream.of(3, 4);
+    }
+
+    @ParameterizedTest
+    @MethodSource("driverIdstream")
+    void goToRest2(int userId) {
+        User u = new User(userId,"AAAA",UserType.CLIENT);
+        DriverApplication d = new DriverApplication(u,jobController,driverController);
+        d.goToRest();
+
+        assertTrue(driverRepository.getById(userId).isDuringRest(), "Driver status should be set to true after going to rest.");
+    }
+
+
 
     @Test
     @AfterAll
