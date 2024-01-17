@@ -129,6 +129,11 @@ class AdministratorApplicationTest {
             assertEquals(0, jobTest2.getDriverId());
             assertEquals(JobStatus.REJECTED, jobTest2.getStatus());
         }
+
+        new Verifications() {{
+            jobController.acceptForConsideration();
+            times = 1;
+        }};
     }
 
 }
