@@ -2,6 +2,8 @@ package pl.edu.pwr.application;
 
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import pl.edu.pwr.Repositories.DriverRepository;
 import pl.edu.pwr.controllers.DriverController;
 import pl.edu.pwr.controllers.JobController;
@@ -11,7 +13,6 @@ import pl.edu.pwr.models.User;
 import pl.edu.pwr.models.enums.CargoType;
 import pl.edu.pwr.models.enums.JobStatus;
 import pl.edu.pwr.models.enums.UserType;
-import pl.edu.pwr.views.application.ApplicationView;
 
 import java.util.NoSuchElementException;
 
@@ -28,15 +29,25 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.*;
 import static pl.edu.pwr.Repositories.DataStore.jobList;
 
-import pl.edu.pwr.models.enums.UserType;
-
-
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class DriverApplicationTest {
 
-    static JobController jobController = new JobController();
-    static DriverController driverController = new DriverController();
-    User user = new User(10,"test_user", UserType.CLIENT);
-    static DriverRepository driverRepository = new DriverRepository();
+
+
+    private DriverController driverController;
+    private JobController jobController;
+    private DriverApplication driverApplication;
+    private DriverRepository driverRepository;
+    User user;
+
+    @BeforeEach
+    void set_up_test_objects() {
+        jobController = new JobController();
+        driverController = new DriverController();
+        user = new User(10,"test_user", UserType.CLIENT);
+        driverRepository = new DriverRepository();
+        driverApplication = new DriverApplication(user,jobController,driverController);
+    }
 
 
     @RepeatedTest(5)
@@ -90,15 +101,21 @@ class DriverApplicationTest {
         assertFalse(byId.isDuringRest());
     }
 
-    @Test
-    @Disabled
-    void goToRest() {
-        DriverApplication d = new DriverApplication(user,jobController,driverController);
-        d.goToRest();
+
+    // przeleci po kolei z tymi parametrami
+    @ParameterizedTest
+    @CsvSource({
+            "3",  // User ID = 3
+            "4",  // User ID = 4
+    })
+    void goToRest(String driverId) {
+        driverController.setStatusDuringRest(Integer.parseInt(driverId));
+        assertEquals(true,driverRepository.getById(Integer.parseInt(driverId)).isDuringRest());
     }
 
     @Test
     @AfterAll
+    @Disabled
     static void reset(){
         // usunięcie po testach utworzonych obiektów
         jobList.subList(2, 6).clear();
@@ -110,6 +127,4 @@ class DriverApplicationTest {
         // sprawdzenie czy lista nie jest pusta
         assertFalse(jobList.isEmpty());
     }
-
-
 }
