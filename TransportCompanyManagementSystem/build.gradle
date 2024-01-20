@@ -40,6 +40,13 @@ dependencies {
 
     // https://mvnrepository.com/artifact/org.jmockit/jmockit
     testImplementation 'org.jmockit:jmockit:1.49'
+
+
+    // FitNesse
+
+    // https://mvnrepository.com/artifact/org.fitnesse/fitnesse
+    compileOnly 'org.fitnesse:fitnesse:20231203'
+
 }
 
 test {
