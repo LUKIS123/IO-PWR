@@ -16,10 +16,8 @@ import pl.edu.pwr.models.User;
 import pl.edu.pwr.models.enums.CargoType;
 import pl.edu.pwr.models.enums.JobStatus;
 import pl.edu.pwr.models.enums.UserType;
-
 import java.util.NoSuchElementException;
 import java.util.stream.Stream;
-
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.params.ParameterizedTest;
