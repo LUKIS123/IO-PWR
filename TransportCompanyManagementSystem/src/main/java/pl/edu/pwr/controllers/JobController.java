@@ -23,6 +23,10 @@ public class JobController {
         jobHistoryRepository = new JobHistoryRepository();
     }
 
+    public JobRepository getJobRepository() {
+        return jobRepository;
+    }
+
     public int listAllJobs() {
         List<Job> all = jobRepository.getAll();
         int i = Job.jobView.listAll(all);

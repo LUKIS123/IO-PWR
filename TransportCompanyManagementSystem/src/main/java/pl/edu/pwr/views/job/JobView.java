@@ -20,10 +20,15 @@ public class JobView {
     }
 
     public int listAll(List<Job> jobs) {
-        jobs.forEach(System.out::println);
-        System.out.print("Wpisz ID: ");
-        Scanner scanner = new Scanner(System.in);
-        return scanner.nextInt();
+        //jobs.forEach(System.out::println);
+        //System.out.print("Wpisz ID: ");
+        //Scanner scanner = new Scanner(System.in);
+        //return scanner.nextInt();
+        Optional<Job> first = jobs.stream().findFirst();
+        if (first.isEmpty()) {
+            return 0;
+        }
+        return first.get().getJobId();
     }
 
     public int verifyView(Job job, Driver driver) {
