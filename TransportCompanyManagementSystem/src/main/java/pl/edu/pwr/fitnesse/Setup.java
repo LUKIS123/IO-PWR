@@ -1,4 +1,4 @@
-package fitnesse;
+package pl.edu.pwr.fitnesse;
 
 import fit.Fixture;
 import pl.edu.pwr.Main;

@@ -13,11 +13,13 @@ import java.util.Scanner;
 public class JobView {
 
     public static boolean tryMakePayment(Job job) {
-        System.out.println("Koszt: " + job.getCost());
-        System.out.println("Tak kliknij-> 1, Nie -> dowolny inny");
-        Scanner scanner = new Scanner(System.in);
+//        System.out.println("Koszt: " + job.getCost());
+//        System.out.println("Tak kliknij-> 1, Nie -> dowolny inny");
+//        Scanner scanner = new Scanner(System.in);
+//
+//        return scanner.nextInt() == 1;
 
-        return scanner.nextInt() == 1;
+        return true;
     }
 
     public void listAllNoAction(List<Job> jobs) {
@@ -25,10 +27,15 @@ public class JobView {
     }
 
     public static int listAll(List<Job> jobs) {
-        jobs.forEach(System.out::println);
-        System.out.print("Wpisz ID: ");
-        Scanner scanner = new Scanner(System.in);
-        return scanner.nextInt();
+//        jobs.forEach(System.out::println);
+//        System.out.print("Wpisz ID: ");
+//        Scanner scanner = new Scanner(System.in);
+//        return scanner.nextInt();
+        Optional<Job> first = jobs.stream().findFirst();
+        if (first.isEmpty()) {
+            return 0;
+        }
+        return first.get().getJobId();
     }
 
     public static int verifyView(Job job, Driver driver) {

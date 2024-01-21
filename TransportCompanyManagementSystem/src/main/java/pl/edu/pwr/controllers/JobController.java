@@ -153,6 +153,36 @@ public class JobController {
         }
     }
 
+    public void makePayment(User user, boolean paymentConfirmed) {
+        List<Job> byUserId = jobRepository.getByUserId(user.getId());
+        int choice = JobView.listAll(byUserId);
+
+        Job chosenJob = null;
+        for (Job job : byUserId) {
+            int jobId = job.getJobId();
+            if (jobId == choice) {
+                chosenJob = job;
+                break;
+            }
+        }
+
+        if (chosenJob == null) {
+            System.out.println("Nie ma takiego zlecenia");
+            return;
+        }
+
+        calculateCost(chosenJob);
+
+        int chosenJobJobId = chosenJob.getJobId();
+        if (paymentConfirmed) {
+            setJobAsPaid(chosenJobJobId);
+            jobHistoryRepository.insert(new JobHistoryEntry(chosenJobJobId, JobStatus.NEWLY_ADDED, JobStatus.PAID));
+        } else {
+            setJobAsCancelled(chosenJobJobId);
+            jobHistoryRepository.insert(new JobHistoryEntry(chosenJobJobId, JobStatus.NEWLY_ADDED, JobStatus.CANCELLED));
+        }
+    }
+
     public void setJobAsFinished(int jobId) {
         Job byId = jobRepository.getById(jobId);
         Job.jobView.displayJobInfo(byId);
