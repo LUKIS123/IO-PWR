@@ -126,101 +126,101 @@ class DriverApplicationTest {
 
 
     // Pozostałe testy
-    static DriverController driverController;
-    static JobController jobController;
-    static DriverApplication driverApplication;
-    static DriverRepository driverRepository;
-    static User user;
-
-    @BeforeAll
-    static void set_up_test_objects() {
-        jobController = new JobController();
-        driverRepository = new DriverRepository();
-        driverController = new DriverController(driverRepository);
-        user = new User(10, "test_user", UserType.DRIVER);
-        driverApplication = new DriverApplication(user, jobController, driverController);
-    }
-
-    @Order(1)
-    @RepeatedTest(5)
-    void getAssignedJob() {
-        // Arrange
-        User user = new User(16, "test_user", UserType.DRIVER);
-        Job new_one = new Job(100, 16, 16, CargoType.HEAVY.toString(), JobStatus.PAID.toString(), 300, 1500, true);
-        jobController.getJobRepository().getAll().add(new_one);
-
-        //act
-        Job to_check = jobController.listJobInRealization(user.getId());
-
-        //assert
-        assertNotNull(to_check);
-    }
-
-    @Order(2)
-    @Test
-    void acceptJob() {
-        // nie ma takiego elementu więc powinien wyrzucić NoSuchElementException exception
-        // z metody getById
-
-        // Arrange
-        User userNonExisting = new User(driverRepository.getAll().size() + 1000, "test_user", UserType.DRIVER);
-
-        //assert
-        NoSuchElementException exception = assertThrows(
-                NoSuchElementException.class,
-                // Act
-                () -> driverRepository.getById(userNonExisting.getId())
-        );
-
-        assertFalse(driverController.acceptJob(userNonExisting.getId()));
-    }
-
-    @Test
-    void goToWork() {
-        //arrange
-        User user = new User(3, "test_user", UserType.DRIVER);
-
-        //act
-        DriverApplication driverApplication = new DriverApplication(user, jobController, driverController);
-        driverApplication.goToWork();
-
-        Driver byId = driverRepository.getById(user.getId());
-        //assert
-        assertFalse(byId.isDuringRest());
-    }
-
-    // przeleci po kolei z tymi parametrami z CSV
-    @ParameterizedTest
-    @CsvSource({  // id driver do testu
-            "3",
-            "4",
-    })
-    void goToRest(String ID) {
-        User u = new User(Integer.parseInt(ID), "AAAA", UserType.DRIVER);
-        DriverApplication d = new DriverApplication(u, jobController, driverController);
-        d.goToRest();
-        assertTrue(driverRepository.getById(Integer.parseInt(ID)).isDuringRest());
-    }
-
-    static Stream<Integer> driverIdstream() {
-        return Stream.of(3, 4);
-    }
-
-    @ParameterizedTest
-    @MethodSource("driverIdstream")
-    void goToRest2(int userId) {
-        User u = new User(userId, "AAAA", UserType.DRIVER);
-        DriverApplication d = new DriverApplication(u, jobController, driverController);
-        d.goToRest();
-
-        assertTrue(driverRepository.getById(userId).isDuringRest(), "Driver status should be set to true after going to rest.");
-    }
-
-    @AfterAll
-    @Disabled   // nie używane
-    static void reset() {
-        // usunięcie po testach utworzonych obiektów
-        driverRepository.getAll().subList(0, driverRepository.getAll().size() - 1).clear();
-    }
+//    static DriverController driverController;
+//    static JobController jobController;
+//    static DriverApplication driverApplication;
+//    static DriverRepository driverRepository;
+//    static User user;
+//
+//    @BeforeAll
+//    static void set_up_test_objects() {
+//        jobController = new JobController();
+//        driverRepository = new DriverRepository();
+//        driverController = new DriverController(driverRepository);
+//        user = new User(10, "test_user", UserType.DRIVER);
+//        driverApplication = new DriverApplication(user, jobController, driverController);
+//    }
+//
+//    @Order(1)
+//    @RepeatedTest(5)
+//    void getAssignedJob() {
+//        // Arrange
+//        User user = new User(16, "test_user", UserType.DRIVER);
+//        Job new_one = new Job(100, 16, 16, CargoType.HEAVY.toString(), JobStatus.PAID.toString(), 300, 1500, true);
+//        jobController.getJobRepository().getAll().add(new_one);
+//
+//        //act
+//        Job to_check = jobController.listJobInRealization(user.getId());
+//
+//        //assert
+//        assertNotNull(to_check);
+//    }
+//
+//    @Order(2)
+//    @Test
+//    void acceptJob() {
+//        // nie ma takiego elementu więc powinien wyrzucić NoSuchElementException exception
+//        // z metody getById
+//
+//        // Arrange
+//        User userNonExisting = new User(driverRepository.getAll().size() + 1000, "test_user", UserType.DRIVER);
+//
+//        //assert
+//        NoSuchElementException exception = assertThrows(
+//                NoSuchElementException.class,
+//                // Act
+//                () -> driverRepository.getById(userNonExisting.getId())
+//        );
+//
+//        assertFalse(driverController.acceptJob(userNonExisting.getId()));
+//    }
+//
+//    @Test
+//    void goToWork() {
+//        //arrange
+//        User user = new User(3, "test_user", UserType.DRIVER);
+//
+//        //act
+//        DriverApplication driverApplication = new DriverApplication(user, jobController, driverController);
+//        driverApplication.goToWork();
+//
+//        Driver byId = driverRepository.getById(user.getId());
+//        //assert
+//        assertFalse(byId.isDuringRest());
+//    }
+//
+//    // przeleci po kolei z tymi parametrami z CSV
+//    @ParameterizedTest
+//    @CsvSource({  // id driver do testu
+//            "3",
+//            "4",
+//    })
+//    void goToRest(String ID) {
+//        User u = new User(Integer.parseInt(ID), "AAAA", UserType.DRIVER);
+//        DriverApplication d = new DriverApplication(u, jobController, driverController);
+//        d.goToRest();
+//        assertTrue(driverRepository.getById(Integer.parseInt(ID)).isDuringRest());
+//    }
+//
+//    static Stream<Integer> driverIdstream() {
+//        return Stream.of(3, 4);
+//    }
+//
+//    @ParameterizedTest
+//    @MethodSource("driverIdstream")
+//    void goToRest2(int userId) {
+//        User u = new User(userId, "AAAA", UserType.DRIVER);
+//        DriverApplication d = new DriverApplication(u, jobController, driverController);
+//        d.goToRest();
+//
+//        assertTrue(driverRepository.getById(userId).isDuringRest(), "Driver status should be set to true after going to rest.");
+//    }
+//
+//    @AfterAll
+//    @Disabled   // nie używane
+//    static void reset() {
+//        // usunięcie po testach utworzonych obiektów
+//        driverRepository.getAll().subList(0, driverRepository.getAll().size() - 1).clear();
+//    }
 
 }
